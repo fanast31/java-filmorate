@@ -17,9 +17,9 @@ import org.slf4j.LoggerFactory;
 @RestController
 @RequestMapping("/users")
 public class UserController {
-    private final HashMap<Integer, User> users = new HashMap<>();
+    private final HashMap<Long, User> users = new HashMap<>();
     private final static Logger log = LoggerFactory.getLogger(UserController.class);
-    private int id = 1;
+    private Long id = 1L;
 
     @PostMapping
     public ResponseEntity<?> addUser(@RequestBody User user) {

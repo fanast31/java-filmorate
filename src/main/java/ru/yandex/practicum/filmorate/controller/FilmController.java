@@ -14,14 +14,15 @@ import java.util.List;
 import java.util.ArrayList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.yandex.practicum.filmorate.model.User;
 
 @RestController
 @RequestMapping("/films")
-public class FilmController {
+public class FilmController extends BaseController<Film> {
 
-    private final HashMap<Integer, Film> films = new HashMap<>();
+    private final HashMap<Long, Film> films = new HashMap<>();
     private final static Logger log = LoggerFactory.getLogger(FilmController.class);
-    private int id = 1;
+    private Long id = 1L;
 
     @PostMapping
     public ResponseEntity<?> addFilm(@RequestBody Film film) {
@@ -87,5 +88,10 @@ public class FilmController {
             log.info(errorMessage);
             throw new ValidationException(errorMessage);
         }
+    }
+
+    @Override
+    public void validate(Film data) {
+
     }
 }
