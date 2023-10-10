@@ -7,31 +7,18 @@ import ru.yandex.practicum.filmorate.exeption.IternalServerException;
 import ru.yandex.practicum.filmorate.exeption.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 
-import java.time.LocalDate;
-import java.time.Month;
-import java.util.HashMap;
 import java.util.List;
-import java.util.ArrayList;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import ru.yandex.practicum.filmorate.model.User;
+
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/films")
 public class FilmController extends BaseController<Film> {
 
-    private final HashMap<Long, Film> films = new HashMap<>();
-    private final static Logger log = LoggerFactory.getLogger(FilmController.class);
-    private Long id = 1L;
-
     @PostMapping
-    public ResponseEntity<?> addFilm(@RequestBody Film film) {
+    public ResponseEntity<?> addFilm(@Valid @RequestBody Film film) {
         try {
-            checkValidity(film);
-            film.setId(id);
-            films.put(id, film);
-            id += 1;
-            log.debug("addFilm " + film);
+            create(film);
             return ResponseEntity.status(HttpStatus.CREATED).body(film);
         } catch (ValidationException e) {
             String errorMessage = "Ошибка при создании фильма - " + e.getMessage();
@@ -41,17 +28,9 @@ public class FilmController extends BaseController<Film> {
     }
 
     @PutMapping()
-    public ResponseEntity<?> updateFilm(@RequestBody Film film) {
+    public ResponseEntity<?> updateFilm(@Valid @RequestBody Film film) {
         try {
-            if (!films.containsKey(film.getId())) {
-                String errorMessage = "Фильм " + film + " по данному id не найден!\n";
-                errorMessage += films + "\n";
-                log.info(errorMessage);
-                throw new IternalServerException(errorMessage);
-            }
-            checkValidity(film);
-            films.put(film.getId(), film);
-            log.debug("updateFilm " + film);
+            update(film);
             return ResponseEntity.status(HttpStatus.OK).body(film);
         } catch (ValidationException e) {
             String errorMessage = "Ошибка при обновлении фильма - " + e.getMessage();
@@ -66,28 +45,8 @@ public class FilmController extends BaseController<Film> {
 
     @GetMapping
     public List<Film> getAllFilms() {
-        log.debug("getAllFilms " + films);
-        return new ArrayList<>(films.values());
-    }
-
-    private void checkValidity(Film film) throws ValidationException {
-        String errorMessage = "";
-        if(film.getName() == null || film.getName().equals("")) {
-            errorMessage += "название не может быть пустым!\n";
-        }
-        if(film.getDescription().length() > 200) {
-            errorMessage += "максимальная длина описания — 200 символов!\n";
-        }
-        if(LocalDate.of(1895, Month.DECEMBER, 28).isAfter(film.getReleaseDate())) {
-            errorMessage += "дата релиза — не раньше 28 декабря 1895 года!\n";
-        }
-        if(film.getDuration() <= 0L) {
-            errorMessage += "продолжительность фильма должна быть положительной!\n";
-        }
-        if(!errorMessage.equals("")) {
-            log.info(errorMessage);
-            throw new ValidationException(errorMessage);
-        }
+        log.debug("getAllFilms " + getAll());
+        return getAll();
     }
 
     @Override

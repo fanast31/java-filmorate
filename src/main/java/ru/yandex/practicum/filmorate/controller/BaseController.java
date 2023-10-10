@@ -3,6 +3,7 @@ package ru.yandex.practicum.filmorate.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.yandex.practicum.filmorate.exeption.IternalServerException;
+import ru.yandex.practicum.filmorate.exeption.ValidationException;
 import ru.yandex.practicum.filmorate.model.BaseUnit;
 
 import java.util.ArrayList;
@@ -11,10 +12,10 @@ import java.util.List;
 
 public abstract class BaseController<T extends BaseUnit> {
     private final HashMap<Long, T> storage = new HashMap<>();
-    private final static Logger log = LoggerFactory.getLogger(UserController.class);
-    private Long id = 1L;
+    protected final static Logger log = LoggerFactory.getLogger(UserController.class);
+    private Long id = 0L;
 
-    public T create(T data) {
+    public T create(T data) throws ValidationException {
         validate(data);
         data.setId(++id);
         storage.put(data.getId(), data);
@@ -22,7 +23,7 @@ public abstract class BaseController<T extends BaseUnit> {
         return data;
     }
 
-    public T update(T data) throws IternalServerException {
+    public T update(T data) throws IternalServerException, ValidationException {
         if (!storage.containsKey(data.getId())) {
             throw new IternalServerException(String.format("data %s not found", data));
         }
@@ -37,5 +38,5 @@ public abstract class BaseController<T extends BaseUnit> {
         return new ArrayList<>(storage.values());
     }
 
-    public abstract void validate(T data);
+    public abstract void validate(T data) throws ValidationException;
 }
