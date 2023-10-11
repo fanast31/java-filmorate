@@ -35,5 +35,16 @@ public class Film extends BaseUnit {
 
     @Min(1)
     private int duration;
+
+    @Override
+    public String toString() {
+        return "Film{" +
+                "id=" + getId() +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", releaseDate=" + releaseDate +
+                ", duration=" + duration +
+                '}';
+    }
 }
 

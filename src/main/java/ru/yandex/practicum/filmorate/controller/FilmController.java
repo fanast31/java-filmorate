@@ -43,6 +43,11 @@ public class FilmController extends BaseController<Film> {
         }
     }
 
+    @DeleteMapping()
+    public void clearAll() {
+        super.clearAll();
+    }
+
     @GetMapping
     public List<Film> getAllFilms() {
         log.debug("getAllFilms " + getAll());
@@ -53,4 +58,5 @@ public class FilmController extends BaseController<Film> {
     public void validate(Film data) {
 
     }
+
 }

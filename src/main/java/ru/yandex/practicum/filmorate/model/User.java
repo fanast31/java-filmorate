@@ -32,4 +32,14 @@ public class User extends BaseUnit {
     @PastOrPresent
     private LocalDate birthday;
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + getId() +
+                ", email='" + email + '\'' +
+                ", login='" + login + '\'' +
+                ", name='" + name + '\'' +
+                ", birthday=" + birthday +
+                '}';
+    }
 }

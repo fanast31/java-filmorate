@@ -39,4 +39,8 @@ public abstract class BaseController<T extends BaseUnit> {
     }
 
     public abstract void validate(T data) throws ValidationException;
+
+    public void clearAll() {
+        storage.clear();
+    };
 }

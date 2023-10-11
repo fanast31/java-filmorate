@@ -54,8 +54,14 @@ public class UserController extends BaseController<User> {
         return getAll();
     }
 
+    @DeleteMapping()
+    public void clearAll() {
+        clearAll();
+    }
+
     @Override
     public void validate(User data) throws ValidationException {
 
     }
+
 }

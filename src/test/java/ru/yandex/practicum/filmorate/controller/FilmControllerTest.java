@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -27,6 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class FilmControllerTest {
     public static final String PATH = "/films";
     @Autowired
@@ -42,7 +44,7 @@ class FilmControllerTest {
 
     public Film newFilm() {
         return Film.builder()
-                .id(5L)
+                .id(1L)
                 .name("Название фильма")
                 .description("Описание фильма")
                 .releaseDate(LocalDate.of(2023, 10, 10))
@@ -60,11 +62,14 @@ class FilmControllerTest {
     }
 
     @BeforeEach
-    void setUp() {
+    void setUp() throws Exception {
         objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
         film = newFilm();
         json = newJson(film);
+        mockMvc.perform(MockMvcRequestBuilders.delete(PATH))
+                .andExpect(MockMvcResultMatchers.status().is(200));
+
     }
 
     @Test
@@ -238,6 +243,9 @@ class FilmControllerTest {
 
         FilmController filmController = new FilmController();
         filmController.addFilm(film);
+        film.setId(1L);
+        json = newJson(film);
+
         result =
                 mockMvc.perform(MockMvcRequestBuilders.post(PATH)
                                 .contentType(MediaType.APPLICATION_JSON)
