@@ -42,5 +42,5 @@ public abstract class BaseController<T extends BaseUnit> {
 
     public void clearAll() {
         storage.clear();
-    };
+    }
 }
