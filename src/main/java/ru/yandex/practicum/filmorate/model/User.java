@@ -1,10 +1,7 @@
 
 package ru.yandex.practicum.filmorate.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import javax.validation.constraints.Email;
@@ -13,14 +10,15 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 import java.time.LocalDate;
 
-@Data
+@Getter
+@Setter
+@ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
 public class User extends BaseUnit {
 
-    @NotNull
     @Email
     private String email;
 
@@ -32,14 +30,4 @@ public class User extends BaseUnit {
     @PastOrPresent
     private LocalDate birthday;
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + getId() +
-                ", email='" + email + '\'' +
-                ", login='" + login + '\'' +
-                ", name='" + name + '\'' +
-                ", birthday=" + birthday +
-                '}';
-    }
 }

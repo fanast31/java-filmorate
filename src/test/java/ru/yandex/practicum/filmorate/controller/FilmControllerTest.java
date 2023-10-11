@@ -30,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @ActiveProfiles("test")
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class FilmControllerTest {
-    public static final String PATH = "/films";
+    private static final String PATH = "/films";
     @Autowired
     private MockMvc mockMvc;
     @Autowired
@@ -40,9 +40,8 @@ class FilmControllerTest {
     private MvcResult result;
     private String responseJson;
     private Film responseFilm;
-    Gson gson;
 
-    public Film newFilm() {
+    private Film newFilm() {
         return Film.builder()
                 .id(1L)
                 .name("Название фильма")
@@ -52,7 +51,7 @@ class FilmControllerTest {
                 .build();
     }
 
-    public String newJson(Film newFilm) {
+    private String newJson(Film newFilm) {
         try {
             return objectMapper.writeValueAsString(newFilm);
         } catch (IOException e) {

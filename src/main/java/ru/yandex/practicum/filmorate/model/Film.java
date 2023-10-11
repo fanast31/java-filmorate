@@ -2,10 +2,7 @@
 package ru.yandex.practicum.filmorate.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import ru.yandex.practicum.filmorate.annotations.MustBeAfterValue;
 
@@ -15,7 +12,9 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
-@Data
+@Getter
+@Setter
+@ToString(callSuper = true)
 @EqualsAndHashCode(callSuper = true)
 @SuperBuilder
 @AllArgsConstructor
@@ -36,15 +35,5 @@ public class Film extends BaseUnit {
     @Min(1)
     private int duration;
 
-    @Override
-    public String toString() {
-        return "Film{" +
-                "id=" + getId() +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", releaseDate=" + releaseDate +
-                ", duration=" + duration +
-                '}';
-    }
 }
 

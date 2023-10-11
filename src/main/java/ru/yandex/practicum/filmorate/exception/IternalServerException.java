@@ -1,4 +1,4 @@
-package ru.yandex.practicum.filmorate.exeption;
+package ru.yandex.practicum.filmorate.exception;
 
 public class IternalServerException extends Exception {
     public IternalServerException(String message) {

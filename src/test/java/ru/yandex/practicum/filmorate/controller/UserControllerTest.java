@@ -30,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @ActiveProfiles("test")
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class UserControllerTest {
-    public static final String PATH = "/users";
+    private static final String PATH = "/users";
     @Autowired
     private MockMvc mockMvc;
     @Autowired
@@ -40,9 +40,8 @@ class UserControllerTest {
     private MvcResult result;
     private String responseJson;
     private User responseUser;
-    Gson gson;
 
-    public User newUser() {
+    private User newUser() {
         return User.builder()
                 .id(1L)
                 .email("fff@gmail.com")
@@ -52,7 +51,7 @@ class UserControllerTest {
                 .build();
     }
 
-    public String newJson(User newUser) {
+    private String newJson(User newUser) {
         try {
             return objectMapper.writeValueAsString(newUser);
         } catch (IOException e) {

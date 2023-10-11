@@ -3,8 +3,8 @@ package ru.yandex.practicum.filmorate.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorate.exeption.ValidationException;
-import ru.yandex.practicum.filmorate.exeption.IternalServerException;
+import ru.yandex.practicum.filmorate.exception.ValidationException;
+import ru.yandex.practicum.filmorate.exception.IternalServerException;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.util.List;
@@ -18,7 +18,6 @@ public class UserController extends BaseController<User> {
     @PostMapping
     public ResponseEntity<?> addUser(@Valid @RequestBody User user) {
         try {
-            validate(user);
             if (user.getName() == null || user.getName().equals("")) {
                 user.setName(user.getLogin());
             }
@@ -34,7 +33,9 @@ public class UserController extends BaseController<User> {
     @PutMapping()
     public ResponseEntity<?> updateUser(@Valid @RequestBody User user) {
         try {
-            validate(user);
+            if (user.getName() == null || user.getName().equals("")) {
+                user.setName(user.getLogin());
+            }
             update(user);
             return ResponseEntity.status(HttpStatus.OK).body(user);
         } catch (ValidationException e) {
@@ -57,11 +58,6 @@ public class UserController extends BaseController<User> {
     @DeleteMapping()
     public void clearAll() {
         clearAll();
-    }
-
-    @Override
-    public void validate(User data) throws ValidationException {
-
     }
 
 }
