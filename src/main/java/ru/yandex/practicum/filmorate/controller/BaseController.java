@@ -12,7 +12,7 @@ import java.util.List;
 
 public abstract class BaseController<T extends BaseUnit> {
     private final HashMap<Long, T> storage = new HashMap<>();
-    protected final static Logger log = LoggerFactory.getLogger(UserController.class);
+    protected static final Logger log = LoggerFactory.getLogger(UserController.class);
     private Long id = 0L;
 
     public T create(T data) throws ValidationException {
