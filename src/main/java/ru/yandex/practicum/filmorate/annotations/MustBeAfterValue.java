@@ -4,7 +4,6 @@ package ru.yandex.practicum.filmorate.annotations;
 import javax.validation.*;
 import javax.validation.constraints.Past;
 import java.lang.annotation.*;
-import java.time.LocalDate;
 
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
