@@ -15,44 +15,44 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.model.User;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
-class FilmControllerTest {
-    public static final String PATH = "/films";
+class UserControllerTest {
+    public static final String PATH = "/users";
     @Autowired
     private MockMvc mockMvc;
     @Autowired
     private ObjectMapper objectMapper;
-    private Film film;
+    private User user;
     private String json;
     private MvcResult result;
     private String responseJson;
-    private Film responseFilm;
+    private User responseUser;
     Gson gson;
 
-    public Film newFilm() {
-        return Film.builder()
+    public User newUser() {
+        return User.builder()
                 .id(5L)
-                .name("Название фильма")
-                .description("Описание фильма")
-                .releaseDate(LocalDate.of(2023, 10, 10))
-                .duration(120)
+                .email("fff@gmail.com")
+                .login("login")
+                .birthday(LocalDate.of(2000, 10, 10))
+                .name("name")
                 .build();
     }
 
-    public String newJson(Film newFilm) {
+    public String newJson(User newUser) {
         try {
-            return objectMapper.writeValueAsString(newFilm);
+            return objectMapper.writeValueAsString(newUser);
         } catch (IOException e) {
             e.printStackTrace();
             return "";
@@ -63,8 +63,8 @@ class FilmControllerTest {
     void setUp() {
         objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
-        film = newFilm();
-        json = newJson(film);
+        user = newUser();
+        json = newJson(user);
     }
 
     @Test
@@ -78,19 +78,38 @@ class FilmControllerTest {
                         .andReturn();
 
         responseJson = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
-        responseFilm = objectMapper.readValue(responseJson, Film.class);
+        responseUser = objectMapper.readValue(responseJson, User.class);
 
-        assertEquals(film, responseFilm);
+        assertEquals(user, responseUser);
 
     }
 
     @Test
-    void create_Negative_Description() throws Exception {
+    void create_Negative_email() throws Exception {
 
-        film.setDescription("Далеко-далеко за словесными горами в стране гласных и согласных живут рыбные тексты. " +
-                "Вдали от всех живут они в буквенных домах на берегу Семантика " +
-                "большого языкового океана. Маленький ручеек Даль журчит ");
-        json = newJson(film);
+        user.setEmail("dddd");
+        json = newJson(user);
+        result =
+                mockMvc.perform(MockMvcRequestBuilders.post(PATH)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(json))
+                        .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                        .andReturn();
+
+        user.setEmail(" ");
+        json = newJson(user);
+        result =
+                mockMvc.perform(MockMvcRequestBuilders.post(PATH)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(json))
+                        .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                        .andReturn();
+    }
+    @Test
+    void create_Negative_login() throws Exception {
+
+        user.setLogin("  ");
+        json = newJson(user);
         result =
                 mockMvc.perform(MockMvcRequestBuilders.post(PATH)
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -100,47 +119,10 @@ class FilmControllerTest {
 
     }
     @Test
-    void create_Negative_Duration() throws Exception {
+    void create_Name() throws Exception {
 
-        film.setDuration(0);
-        json = newJson(film);
-        result =
-                mockMvc.perform(MockMvcRequestBuilders.post(PATH)
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(json))
-                        .andExpect(MockMvcResultMatchers.status().isBadRequest())
-                        .andReturn();
-
-    }
-    @Test
-    void create_Negative_Name() throws Exception {
-
-        film.setName(" ");
-        json = newJson(film);
-        result =
-                mockMvc.perform(MockMvcRequestBuilders.post(PATH)
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(json))
-                        .andExpect(MockMvcResultMatchers.status().isBadRequest())
-                        .andReturn();
-
-    }
-    @Test
-    void create_Negative_releaseDate() throws Exception {
-
-        film.setReleaseDate(LocalDate.of(1895,12,27));
-        json = newJson(film);
-        result =
-                mockMvc.perform(MockMvcRequestBuilders.post(PATH)
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(json))
-                        .andExpect(MockMvcResultMatchers.status().isBadRequest())
-                        .andReturn();
-
-
-        film = newFilm();
-        film.setReleaseDate(LocalDate.of(1895,12,29));
-        json = newJson(film);
+        user.setName("");
+        json = newJson(user);
         result =
                 mockMvc.perform(MockMvcRequestBuilders.post(PATH)
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -148,21 +130,22 @@ class FilmControllerTest {
                         .andExpect(MockMvcResultMatchers.status().is(201))
                         .andReturn();
         responseJson = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
-        responseFilm = objectMapper.readValue(responseJson, Film.class);
-        film.setId(responseFilm.getId());
-        assertEquals(film, responseFilm);
-        assertEquals(film.getReleaseDate(), responseFilm.getReleaseDate());
+        responseUser = objectMapper.readValue(responseJson, User.class);
+        assertEquals(user.getLogin(), responseUser.getName());
 
+    }
+    @Test
+    void create_Negative_birthday() throws Exception {
 
-        film = newFilm();
-        film.setReleaseDate(null);
-        json = newJson(film);
+        user.setBirthday(LocalDate.of(2025,12,27));
+        json = newJson(user);
         result =
                 mockMvc.perform(MockMvcRequestBuilders.post(PATH)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(json))
                         .andExpect(MockMvcResultMatchers.status().isBadRequest())
                         .andReturn();
+
     }
     @Test
     void update_Positive() throws Exception {
@@ -174,10 +157,10 @@ class FilmControllerTest {
                         .andExpect(MockMvcResultMatchers.status().is(201))
                         .andReturn();
         responseJson = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
-        responseFilm = objectMapper.readValue(responseJson, Film.class);
-        responseFilm.setDescription("update");
+        responseUser = objectMapper.readValue(responseJson, User.class);
+        responseUser.setName("update");
 
-        json = newJson(responseFilm);
+        json = newJson(responseUser);
         result =
                 mockMvc.perform(MockMvcRequestBuilders.put(PATH)
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -185,10 +168,10 @@ class FilmControllerTest {
                         .andExpect(MockMvcResultMatchers.status().isOk())
                         .andReturn();
         responseJson = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
-        Film responseFilm2 = objectMapper.readValue(responseJson, Film.class);
+        User responseUser2 = objectMapper.readValue(responseJson, User.class);
 
-        assertEquals(responseFilm, responseFilm2);
-        assertEquals(responseFilm.getDescription(), responseFilm2.getDescription());
+        assertEquals(responseUser, responseUser2);
+        assertEquals(responseUser.getName(), responseUser2.getName());
 
     }
 
@@ -202,10 +185,10 @@ class FilmControllerTest {
                         .andExpect(MockMvcResultMatchers.status().is(201))
                         .andReturn();
         responseJson = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
-        responseFilm = objectMapper.readValue(responseJson, Film.class);
-        responseFilm.setId(15L);
+        responseUser = objectMapper.readValue(responseJson, User.class);
+        responseUser.setId(15L);
 
-        json = newJson(responseFilm);
+        json = newJson(responseUser);
         result =
                 mockMvc.perform(MockMvcRequestBuilders.put(PATH)
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -224,16 +207,16 @@ class FilmControllerTest {
                         .andReturn();
         responseJson = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
 
-        ArrayList<Film> list = objectMapper.readValue(responseJson, new TypeReference<ArrayList<Film>>() {});
-        FilmController filmController = new FilmController();
-        assertEquals(filmController.getAllFilms(), list);
+        ArrayList<User> list = objectMapper.readValue(responseJson, new TypeReference<ArrayList<User>>() {});
+        UserController userController = new UserController();
+        assertEquals(userController.getAllUsers(), list);
     }
 
     @Test
     void getAll_NotEmpty() throws Exception {
 
-        FilmController filmController = new FilmController();
-        filmController.addFilm(film);
+        UserController userController = new UserController();
+        userController.addUser(user);
         result =
                 mockMvc.perform(MockMvcRequestBuilders.post(PATH)
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -246,8 +229,8 @@ class FilmControllerTest {
                         .andReturn();
         responseJson = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
 
-        ArrayList<Film> list = objectMapper.readValue(responseJson, new TypeReference<ArrayList<Film>>() {});
-        assertEquals(filmController.getAllFilms(), list);
+        ArrayList<User> list = objectMapper.readValue(responseJson, new TypeReference<ArrayList<User>>() {});
+        assertEquals(userController.getAllUsers(), list);
 
     }
 
