@@ -105,6 +105,7 @@ class UserControllerTest {
                         .andExpect(MockMvcResultMatchers.status().isBadRequest())
                         .andReturn();
     }
+
     @Test
     void create_Negative_login() throws Exception {
 
@@ -118,6 +119,7 @@ class UserControllerTest {
                         .andReturn();
 
     }
+
     @Test
     void create_Name() throws Exception {
 
@@ -134,6 +136,7 @@ class UserControllerTest {
         assertEquals(user.getLogin(), responseUser.getName());
 
     }
+
     @Test
     void create_Negative_birthday() throws Exception {
 
@@ -147,6 +150,7 @@ class UserControllerTest {
                         .andReturn();
 
     }
+
     @Test
     void update_Positive() throws Exception {
 

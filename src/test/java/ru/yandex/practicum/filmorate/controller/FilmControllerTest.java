@@ -99,6 +99,7 @@ class FilmControllerTest {
                         .andReturn();
 
     }
+
     @Test
     void create_Negative_Duration() throws Exception {
 
@@ -112,6 +113,7 @@ class FilmControllerTest {
                         .andReturn();
 
     }
+
     @Test
     void create_Negative_Name() throws Exception {
 
@@ -125,6 +127,7 @@ class FilmControllerTest {
                         .andReturn();
 
     }
+
     @Test
     void create_Negative_releaseDate() throws Exception {
 
@@ -164,6 +167,7 @@ class FilmControllerTest {
                         .andExpect(MockMvcResultMatchers.status().isBadRequest())
                         .andReturn();
     }
+
     @Test
     void update_Positive() throws Exception {
 
