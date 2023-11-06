@@ -4,7 +4,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
-import ru.yandex.practicum.filmorate.exception.IternalServerException;
+import ru.yandex.practicum.filmorate.exception.DataNotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.util.List;
@@ -42,7 +42,7 @@ public class UserController extends BaseController<User> {
             String errorMessage = "Ошибка при обновлении пользователя - " + e.getMessage();
             log.info("updateFilm " + user + " " + errorMessage);
             return ResponseEntity.badRequest().body(e);
-        } catch (IternalServerException e) {
+        } catch (DataNotFoundException e) {
             String errorMessage = "Пользователь не найден - " + e.getMessage();
             log.info("updateFilm " + user + " " + errorMessage);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e);

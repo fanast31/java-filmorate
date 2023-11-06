@@ -3,7 +3,7 @@ package ru.yandex.practicum.filmorate.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorate.exception.IternalServerException;
+import ru.yandex.practicum.filmorate.exception.DataNotFoundException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 
@@ -36,7 +36,7 @@ public class FilmController extends BaseController<Film> {
             String errorMessage = "Ошибка при обновлении фильма - " + e.getMessage();
             log.info("updateFilm " + film + " " + errorMessage);
             return ResponseEntity.badRequest().body(e);
-        } catch (IternalServerException e) {
+        } catch (DataNotFoundException e) {
             String errorMessage = "Фильм не найден - " + e.getMessage();
             log.info("updateFilm " + film + " " + errorMessage);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e);
