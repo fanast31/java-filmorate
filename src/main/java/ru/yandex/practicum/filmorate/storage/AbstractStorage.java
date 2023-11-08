@@ -8,9 +8,9 @@ import java.util.List;
 
 public interface AbstractStorage<T extends BaseUnit> {
 
-    public T create(T data) throws ValidationException;
+    public T create(T data);
 
-    public T update(T data) throws DataNotFoundException, ValidationException;
+    public T update(T data) throws DataNotFoundException;
 
     public List<T> getAll();
 

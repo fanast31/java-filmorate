@@ -1,41 +1,36 @@
 package ru.yandex.practicum.filmorate.controller;
 
+import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exception.DataNotFoundException;
-import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
-
-import java.util.List;
+import ru.yandex.practicum.filmorate.service.FilmService;
 
 import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/films")
-public class FilmController extends BaseController<Film> {
+@RequiredArgsConstructor
+public class FilmController {
+
+    private final FilmService filmService;
+    private static final Logger log = LoggerFactory.getLogger(FilmController.class);
 
     @PostMapping
-    public ResponseEntity<?> addFilm(@Valid @RequestBody Film film) {
-        try {
-            create(film);
-            return ResponseEntity.status(HttpStatus.CREATED).body(film);
-        } catch (ValidationException e) {
-            String errorMessage = "Ошибка при создании фильма - " + e.getMessage();
-            log.info("addFilm " + film + " " + errorMessage);
-            return ResponseEntity.badRequest().body(e);
-        }
+    public ResponseEntity<?> create(@Valid @RequestBody Film film) {
+        filmService.create(film);
+        return ResponseEntity.status(HttpStatus.CREATED).body(film);
     }
 
     @PutMapping()
-    public ResponseEntity<?> updateFilm(@Valid @RequestBody Film film) {
+    public ResponseEntity<?> update(@Valid @RequestBody Film film) {
         try {
-            update(film);
+            filmService.update(film);
             return ResponseEntity.status(HttpStatus.OK).body(film);
-        } catch (ValidationException e) {
-            String errorMessage = "Ошибка при обновлении фильма - " + e.getMessage();
-            log.info("updateFilm " + film + " " + errorMessage);
-            return ResponseEntity.badRequest().body(e);
         } catch (DataNotFoundException e) {
             String errorMessage = "Фильм не найден - " + e.getMessage();
             log.info("updateFilm " + film + " " + errorMessage);
@@ -44,14 +39,15 @@ public class FilmController extends BaseController<Film> {
     }
 
     @DeleteMapping()
-    public void clearAll() {
-        super.clearAll();
+    public ResponseEntity<?> clearAll() {
+        filmService.clearAll();
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @GetMapping
-    public List<Film> getAllFilms() {
-        log.debug("getAllFilms " + getAll());
-        return getAll();
+    public ResponseEntity<?> getAll() {
+        log.debug("getAllFilms " + filmService.getAll());
+        return ResponseEntity.status(HttpStatus.OK).body(filmService.getAll());
     }
 
 }
