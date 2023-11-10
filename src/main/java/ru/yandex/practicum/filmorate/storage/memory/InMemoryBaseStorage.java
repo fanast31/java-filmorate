@@ -1,3 +1,4 @@
+
 package ru.yandex.practicum.filmorate.storage.memory;
 
 import org.slf4j.Logger;
@@ -17,6 +18,11 @@ public abstract class InMemoryBaseStorage<T extends BaseUnit> implements Abstrac
     protected static final Logger log = LoggerFactory.getLogger(InMemoryBaseStorage.class);
 
     private Long id = 0L;
+
+    @Override
+    public T findById(Long id) {
+        return storage.get(id);
+    }
 
     @Override
     public T create(T data) {

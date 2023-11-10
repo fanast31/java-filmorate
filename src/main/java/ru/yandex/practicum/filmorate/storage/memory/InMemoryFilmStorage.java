@@ -6,5 +6,4 @@ import ru.yandex.practicum.filmorate.storage.FilmStorage;
 
 @Component
 public class InMemoryFilmStorage extends InMemoryBaseStorage<Film> implements FilmStorage {
-
 }

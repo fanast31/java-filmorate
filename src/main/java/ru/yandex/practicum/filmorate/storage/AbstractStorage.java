@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface AbstractStorage<T extends BaseUnit> {
 
+    public T findById(Long id);
+
     public T create(T data);
 
     public T update(T data) throws DataNotFoundException;
