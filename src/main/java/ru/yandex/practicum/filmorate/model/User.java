@@ -29,4 +29,7 @@ public class User extends BaseUnit {
     @PastOrPresent
     private LocalDate birthday;
 
+    //@NotNull
+    //private Set<Long> friendsId;
+
 }

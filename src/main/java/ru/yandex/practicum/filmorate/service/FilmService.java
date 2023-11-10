@@ -5,9 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exception.DataNotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.storage.memory.InMemoryFilmStorage;
-import ru.yandex.practicum.filmorate.storage.memory.InMemoryUserStorage;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -35,4 +33,5 @@ public class FilmService extends AbstractService<Film> {
     public List<Film> getAll() {
         return filmStorage.getAll();
     }
+
 }

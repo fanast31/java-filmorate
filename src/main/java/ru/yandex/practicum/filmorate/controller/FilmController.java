@@ -27,15 +27,9 @@ public class FilmController {
     }
 
     @PutMapping()
-    public ResponseEntity<?> update(@Valid @RequestBody Film film) {
-        try {
-            filmService.update(film);
-            return ResponseEntity.status(HttpStatus.OK).body(film);
-        } catch (DataNotFoundException e) {
-            String errorMessage = "Фильм не найден - " + e.getMessage();
-            log.info("updateFilm " + film + " " + errorMessage);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e);
-        }
+    public ResponseEntity<?> update(@Valid @RequestBody Film film) throws DataNotFoundException {
+        filmService.update(film);
+        return ResponseEntity.status(HttpStatus.OK).body(film);
     }
 
     @DeleteMapping()

@@ -1,16 +1,11 @@
 package ru.yandex.practicum.filmorate.service;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exception.DataNotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.storage.memory.InMemoryFilmStorage;
 import ru.yandex.practicum.filmorate.storage.memory.InMemoryUserStorage;
 
-import javax.validation.Valid;
 import java.util.List;
 
 @Service
@@ -44,4 +39,5 @@ public class UserService extends AbstractService<User>{
     public void clearAll() {
         userStorage.clearAll();
     }
+
 }
