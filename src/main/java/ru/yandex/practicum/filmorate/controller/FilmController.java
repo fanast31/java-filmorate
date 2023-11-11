@@ -20,27 +20,26 @@ public class FilmController {
     private final FilmService filmService;
 
     @PutMapping("/{id}/like/{userId}")
-    public ResponseEntity<?> likeFilm(@PathVariable Long filmId, @PathVariable Long userId) throws DataNotFoundException {
-        // Логика лайка фильма
+    public ResponseEntity<?> likeFilm(@PathVariable Long id, @PathVariable Long userId) throws DataNotFoundException {
+        filmService.addLike(id, userId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @DeleteMapping("/{id}/like/{userId}")
     public ResponseEntity<Void> unlikeFilm(@PathVariable Long id, @PathVariable Long userId) throws DataNotFoundException {
-        // Логика удаления лайка
+        filmService.addDislike(id, userId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @GetMapping("/popular")
-    public ResponseEntity<List<Film>> getPopularFilms(@RequestParam(required = false, defaultValue = "10") Integer count) {
-        // Логика получения списка популярных фильмов
-        ArrayList<Film> filmsList = null;
+    public ResponseEntity<List<Film>> getTopFilms(@RequestParam(required = false, defaultValue = "10") int count) {
+        List<Film> filmsList = filmService.getTopFilms(count);
         return ResponseEntity.status(HttpStatus.OK).body(filmsList);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Film> getFilm(@PathVariable Long id) throws DataNotFoundException {
-        Film film = null;
+        Film film = filmService.findById(id);
         return ResponseEntity.status(HttpStatus.OK).body(film);
     }
 
