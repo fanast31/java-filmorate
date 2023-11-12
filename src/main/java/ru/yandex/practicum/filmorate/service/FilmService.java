@@ -16,16 +16,16 @@ public class FilmService extends AbstractService<Film> {
 
     private final InMemoryFilmStorage filmStorage;
 
-    public void addLike(Long filmId, Long UserId) throws DataNotFoundException {
-        Film film = findById(UserId);
+    public void addLike(Long filmId, Long userId) throws DataNotFoundException {
+        Film film = findById(userId);
         film = findById(filmId);
-        film.getLikesFromUsers().add(UserId);
+        film.getLikesFromUsers().add(userId);
     }
 
-    public void addDislike(Long filmId, Long UserId) throws DataNotFoundException {
-        Film film = findById(UserId);
+    public void addDislike(Long filmId, Long userId) throws DataNotFoundException {
+        Film film = findById(userId);
         film = findById(filmId);
-        film.getLikesFromUsers().remove(UserId);
+        film.getLikesFromUsers().remove(userId);
     }
 
     public List<Film> getTopFilms(int count) {
