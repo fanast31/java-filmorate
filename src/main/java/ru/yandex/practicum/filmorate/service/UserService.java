@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class UserService extends AbstractService<User>{
+public class UserService extends AbstractService<User> {
 
     private final InMemoryUserStorage userStorage;
 
