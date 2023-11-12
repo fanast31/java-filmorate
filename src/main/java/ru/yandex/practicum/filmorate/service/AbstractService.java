@@ -15,6 +15,6 @@ public abstract class AbstractService<T extends BaseUnit> {
 
      abstract List<T> getAll();
 
-     abstract T findById(Long id) throws DataNotFoundException ;
+     abstract T findById(Long id) throws DataNotFoundException;
 
 }
