@@ -4,7 +4,6 @@ package ru.yandex.practicum.filmorate.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.annotations.MustBeAfterValue;
 
 import javax.validation.constraints.Min;
