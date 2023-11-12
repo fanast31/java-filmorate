@@ -9,7 +9,6 @@ import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.FilmService;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -42,8 +41,6 @@ public class FilmController {
         Film film = filmService.findById(id);
         return ResponseEntity.status(HttpStatus.OK).body(film);
     }
-
-
 
     @PostMapping
     public ResponseEntity<?> create(@Valid @RequestBody Film film) {

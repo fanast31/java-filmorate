@@ -4,6 +4,7 @@ package ru.yandex.practicum.filmorate.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.annotations.MustBeAfterValue;
 
 import javax.validation.constraints.Min;
@@ -11,6 +12,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -36,8 +38,7 @@ public class Film extends BaseUnit {
     @Min(1)
     private int duration;
 
-    @NotNull
-    private Set<Long> likesFromUsers;
+    private Set<Long> likesFromUsers = new HashSet<>();
 
 }
 
