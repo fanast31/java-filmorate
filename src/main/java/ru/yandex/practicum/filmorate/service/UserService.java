@@ -31,7 +31,7 @@ public class UserService extends AbstractService<User> {
         user2.getFriendsId().remove(id1);
     }
 
-    private List<User> getUsersById(Set<Long> usersId) {
+    private List<User> getUsersById(Set<Long> usersId) throws DataNotFoundException {
         return usersId.stream()
                 .map(this::findById)
                 .collect(Collectors.toList());

@@ -3,7 +3,6 @@ package ru.yandex.practicum.filmorate.model;
 
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -12,7 +11,6 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
-@Service
 @Getter
 @Setter
 @ToString(callSuper = true)

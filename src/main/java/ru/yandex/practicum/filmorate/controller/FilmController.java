@@ -19,7 +19,7 @@ public class FilmController {
     private final FilmService filmService;
 
     @PutMapping("/{id}/like/{userId}")
-    public ResponseEntity<?> likeFilm(@PathVariable Long id, @PathVariable Long userId) throws DataNotFoundException {
+    public ResponseEntity<Void> likeFilm(@PathVariable Long id, @PathVariable Long userId) throws DataNotFoundException {
         filmService.addLike(id, userId);
         return ResponseEntity.status(HttpStatus.OK).build();
     }
@@ -43,25 +43,25 @@ public class FilmController {
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@Valid @RequestBody Film film) {
+    public ResponseEntity<Film> create(@Valid @RequestBody Film film) {
         Film newFilm = filmService.create(film);
         return ResponseEntity.status(HttpStatus.CREATED).body(newFilm);
     }
 
     @PutMapping()
-    public ResponseEntity<?> update(@Valid @RequestBody Film film) throws DataNotFoundException {
+    public ResponseEntity<Film> update(@Valid @RequestBody Film film) throws DataNotFoundException {
         Film newFilm = filmService.update(film);
         return ResponseEntity.status(HttpStatus.OK).body(newFilm);
     }
 
     @DeleteMapping()
-    public ResponseEntity<?> clearAll() {
+    public ResponseEntity<Void> clearAll() {
         filmService.clearAll();
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
     @GetMapping
-    public ResponseEntity<?> getAll() {
+    public ResponseEntity<List<Film>> getAll() {
         return ResponseEntity.status(HttpStatus.OK).body(filmService.getAll());
     }
 

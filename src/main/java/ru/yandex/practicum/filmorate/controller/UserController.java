@@ -31,13 +31,13 @@ public class UserController {
     }
 
     @GetMapping("/{id}/friends")
-    public ResponseEntity<?> getFriends(@PathVariable Long id) throws DataNotFoundException {
+    public ResponseEntity<List<User>> getFriends(@PathVariable Long id) throws DataNotFoundException {
         List<User> filmsSet = userService.getFriends(id);
         return ResponseEntity.status(HttpStatus.OK).body(filmsSet);
     }
 
     @GetMapping("/{id}/friends/common/{otherId}")
-    public ResponseEntity<?> getCommonFriends(@PathVariable Long id, @PathVariable Long otherId) throws DataNotFoundException {
+    public ResponseEntity<List<User>> getCommonFriends(@PathVariable Long id, @PathVariable Long otherId) throws DataNotFoundException {
         // Логика получения списка общих друзей
         List<User> filmsSet = userService.getCommonFriends(id, otherId);
         return ResponseEntity.status(HttpStatus.OK).body(filmsSet);
@@ -50,22 +50,22 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@Valid @RequestBody User user) {
+    public ResponseEntity<User> create(@Valid @RequestBody User user) {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.create(user));
     }
 
     @PutMapping()
-    public ResponseEntity<?> update(@Valid @RequestBody User user) throws DataNotFoundException {
+    public ResponseEntity<User> update(@Valid @RequestBody User user) throws DataNotFoundException {
         return ResponseEntity.status(HttpStatus.OK).body(userService.update(user));
     }
 
     @GetMapping
-    public List<User> getAll() {
-        return userService.getAll();
+    public ResponseEntity<List<User>> getAll() {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getAll());
     }
 
     @DeleteMapping()
-    public ResponseEntity<?> clearAll() {
+    public ResponseEntity<Void> clearAll() {
         userService.clearAll();
         return ResponseEntity.status(HttpStatus.OK).build();
     }
