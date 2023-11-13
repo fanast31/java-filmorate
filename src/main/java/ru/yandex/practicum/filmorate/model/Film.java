@@ -11,6 +11,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -34,6 +36,8 @@ public class Film extends BaseUnit {
 
     @Min(1)
     private int duration;
+
+    private Set<Long> likesFromUsers = new HashSet<>();
 
 }
 

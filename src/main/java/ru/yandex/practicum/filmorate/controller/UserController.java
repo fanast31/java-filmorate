@@ -1,63 +1,73 @@
 package ru.yandex.practicum.filmorate.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorate.exception.ValidationException;
-import ru.yandex.practicum.filmorate.exception.IternalServerException;
+import ru.yandex.practicum.filmorate.exception.DataNotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
-
-import java.util.List;
+import ru.yandex.practicum.filmorate.service.UserService;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/users")
-public class UserController extends BaseController<User> {
+@RequiredArgsConstructor
+public class UserController {
+
+    private final UserService userService;
+
+    @PutMapping("/{id}/friends/{friendId}")
+    public ResponseEntity<Void> addFriend(@PathVariable Long id, @PathVariable Long friendId) throws DataNotFoundException {
+        userService.addFriend(id, friendId);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @DeleteMapping("/{id}/friends/{friendId}")
+    public ResponseEntity<Void> removeFriend(@PathVariable Long id, @PathVariable Long friendId) throws DataNotFoundException {
+        userService.removeFriend(id, friendId);
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @GetMapping("/{id}/friends")
+    public ResponseEntity<List<User>> getFriends(@PathVariable Long id) throws DataNotFoundException {
+        List<User> filmsSet = userService.getFriends(id);
+        return ResponseEntity.status(HttpStatus.OK).body(filmsSet);
+    }
+
+    @GetMapping("/{id}/friends/common/{otherId}")
+    public ResponseEntity<List<User>> getCommonFriends(@PathVariable Long id, @PathVariable Long otherId) throws DataNotFoundException {
+        // Логика получения списка общих друзей
+        List<User> filmsSet = userService.getCommonFriends(id, otherId);
+        return ResponseEntity.status(HttpStatus.OK).body(filmsSet);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<User> getUser(@PathVariable Long id) throws DataNotFoundException {
+        User user = userService.findById(id);
+        return ResponseEntity.status(HttpStatus.OK).body(user);
+    }
 
     @PostMapping
-    public ResponseEntity<?> addUser(@Valid @RequestBody User user) {
-        try {
-            if (user.getName() == null || user.getName().equals("")) {
-                user.setName(user.getLogin());
-            }
-            create(user);
-            return ResponseEntity.status(HttpStatus.CREATED).body(user);
-        } catch (ValidationException e) {
-            String errorMessage = "Ошибка при создании пользователя - " + e.getMessage();
-            log.info("addUser " + user + " " + errorMessage);
-            return ResponseEntity.badRequest().body(e);
-        }
+    public ResponseEntity<User> create(@Valid @RequestBody User user) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(userService.create(user));
     }
 
     @PutMapping()
-    public ResponseEntity<?> updateUser(@Valid @RequestBody User user) {
-        try {
-            if (user.getName() == null || user.getName().equals("")) {
-                user.setName(user.getLogin());
-            }
-            update(user);
-            return ResponseEntity.status(HttpStatus.OK).body(user);
-        } catch (ValidationException e) {
-            String errorMessage = "Ошибка при обновлении пользователя - " + e.getMessage();
-            log.info("updateFilm " + user + " " + errorMessage);
-            return ResponseEntity.badRequest().body(e);
-        } catch (IternalServerException e) {
-            String errorMessage = "Пользователь не найден - " + e.getMessage();
-            log.info("updateFilm " + user + " " + errorMessage);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e);
-        }
+    public ResponseEntity<User> update(@Valid @RequestBody User user) throws DataNotFoundException {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.update(user));
     }
 
     @GetMapping
-    public List<User> getAllUsers() {
-        log.debug("getAllUsers " + getAll());
-        return getAll();
+    public ResponseEntity<List<User>> getAll() {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getAll());
     }
 
     @DeleteMapping()
-    public void clearAll() {
-        clearAll();
+    public ResponseEntity<Void> clearAll() {
+        userService.clearAll();
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 
 }

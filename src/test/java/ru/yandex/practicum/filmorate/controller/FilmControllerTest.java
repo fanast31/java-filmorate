@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.service.FilmService;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -34,6 +35,8 @@ class FilmControllerTest {
     private MockMvc mockMvc;
     @Autowired
     private ObjectMapper objectMapper;
+    @Autowired
+    private FilmService filmService;
     private Film film;
     private String json;
     private MvcResult result;
@@ -217,7 +220,7 @@ class FilmControllerTest {
                 mockMvc.perform(MockMvcRequestBuilders.put(PATH)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(json))
-                        .andExpect(MockMvcResultMatchers.status().isInternalServerError())
+                        .andExpect(MockMvcResultMatchers.status().isNotFound())
                         .andReturn();
 
     }
@@ -232,15 +235,13 @@ class FilmControllerTest {
         responseJson = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
 
         ArrayList<Film> list = objectMapper.readValue(responseJson, new TypeReference<ArrayList<Film>>() {});
-        FilmController filmController = new FilmController();
-        assertEquals(filmController.getAllFilms(), list);
+        assertEquals(filmService.getAll(), list);
     }
 
     @Test
     void getAll_NotEmpty() throws Exception {
 
-        FilmController filmController = new FilmController();
-        filmController.addFilm(film);
+        filmService.create(film);
         film.setId(1L);
         json = newJson(film);
 
@@ -257,7 +258,7 @@ class FilmControllerTest {
         responseJson = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
 
         ArrayList<Film> list = objectMapper.readValue(responseJson, new TypeReference<ArrayList<Film>>() {});
-        assertEquals(filmController.getAllFilms(), list);
+        assertEquals(filmService.getAll(), list);
 
     }
 

@@ -16,6 +16,7 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.service.UserService;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -34,6 +35,8 @@ class UserControllerTest {
     private MockMvc mockMvc;
     @Autowired
     private ObjectMapper objectMapper;
+    @Autowired
+    private UserService userService;
     private User user;
     private String json;
     private MvcResult result;
@@ -197,7 +200,7 @@ class UserControllerTest {
                 mockMvc.perform(MockMvcRequestBuilders.put(PATH)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(json))
-                        .andExpect(MockMvcResultMatchers.status().isInternalServerError())
+                        .andExpect(MockMvcResultMatchers.status().isNotFound())
                         .andReturn();
 
     }
@@ -212,15 +215,13 @@ class UserControllerTest {
         responseJson = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
 
         ArrayList<User> list = objectMapper.readValue(responseJson, new TypeReference<ArrayList<User>>() {});
-        UserController userController = new UserController();
-        assertEquals(userController.getAllUsers(), list);
+        assertEquals(userService.getAll(), list);
     }
 
     @Test
     void getAll_NotEmpty() throws Exception {
 
-        UserController userController = new UserController();
-        userController.addUser(user);
+        userService.create(user);
         result =
                 mockMvc.perform(MockMvcRequestBuilders.post(PATH)
                                 .contentType(MediaType.APPLICATION_JSON)
@@ -234,7 +235,7 @@ class UserControllerTest {
         responseJson = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
 
         ArrayList<User> list = objectMapper.readValue(responseJson, new TypeReference<ArrayList<User>>() {});
-        assertEquals(userController.getAllUsers(), list);
+        assertEquals(userService.getAll(), list);
 
     }
 
