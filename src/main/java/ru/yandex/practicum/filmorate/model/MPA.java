@@ -1,9 +1,19 @@
 package ru.yandex.practicum.filmorate.model;
 
-public enum MPA {
-    G,
-    PG,
-    PG13,
-    R,
-    NC_17
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
+
+import javax.validation.constraints.NotBlank;
+
+@Data
+@SuperBuilder
+@NoArgsConstructor
+@EqualsAndHashCode(callSuper = true)
+public class MPA extends BaseUnit {
+
+    @NotBlank
+    private String name;
+
 }

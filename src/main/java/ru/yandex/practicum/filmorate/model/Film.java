@@ -41,6 +41,6 @@ public class Film extends BaseUnit {
 
     private Set<Genre> genres = new HashSet<>();
 
-    private MPA mpa = null;
+    private MPA mpa;
 }
 
