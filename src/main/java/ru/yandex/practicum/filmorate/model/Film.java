@@ -39,5 +39,8 @@ public class Film extends BaseUnit {
 
     private Set<Long> likesFromUsers = new HashSet<>();
 
+    private Set<Genre> genres = new HashSet<>();
+
+    private MPA mpa = null;
 }
 
