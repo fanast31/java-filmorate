@@ -12,10 +12,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MPAService extends AbstractService<MPA> {
 
-    private final InMemoryMPAStorage mpaStorage;
-
-    private final MPAService mpaService;
-
     @Override
     public MPA create(MPA data) {
         throw new UnsupportedOperationException("the command is not supported");

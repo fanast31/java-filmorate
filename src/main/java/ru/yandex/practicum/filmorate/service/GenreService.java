@@ -13,10 +13,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class GenreService extends AbstractService<Genre> {
 
-    private final InMemoryGenreStorage genreStorage;
-
-    private final GenreService genreService;
-
     @Override
     public Genre create(Genre data) {
         throw new UnsupportedOperationException("the command is not supported");
