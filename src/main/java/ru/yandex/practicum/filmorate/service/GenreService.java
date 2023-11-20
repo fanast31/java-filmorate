@@ -5,13 +5,17 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exception.DataNotFoundException;
 import ru.yandex.practicum.filmorate.model.Genre;
+import ru.yandex.practicum.filmorate.storage.AbstractStorage;
 import ru.yandex.practicum.filmorate.storage.memory.InMemoryGenreStorage;
 
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class GenreService extends AbstractService<Genre> {
+
+    public GenreService(AbstractStorage<Genre> storage) {
+        super(storage);
+    }
 
     @Override
     public Genre create(Genre data) {

@@ -4,16 +4,21 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exception.DataNotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.storage.AbstractStorage;
 
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@RequiredArgsConstructor
 public class FilmService extends AbstractService<Film> {
 
     private final UserService userService;
+
+    public FilmService(AbstractStorage<Film> storage, UserService userService) {
+        super(storage);
+        this.userService = userService;
+    }
 
     public void addLike(Long filmId, Long userId) throws DataNotFoundException {
         Film film = findById(filmId);
@@ -28,7 +33,7 @@ public class FilmService extends AbstractService<Film> {
     }
 
     public List<Film> getTopFilms(int count) {
-        return storage.getAll().stream()
+        return getAll().stream()
                 .sorted(Comparator.comparing(film -> ((Film) film).getLikesFromUsers().size()).reversed())
                 .limit(count)
                 .collect(Collectors.toList());
