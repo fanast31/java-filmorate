@@ -18,27 +18,27 @@ public class GenreService extends AbstractService<Genre> {
     private final GenreService genreService;
 
     @Override
-    Genre create(Genre data) {
+    public Genre create(Genre data) {
+        throw new UnsupportedOperationException("the command is not supported");
+    }
+
+    @Override
+    public Genre update(Genre data) throws DataNotFoundException {
+        throw new UnsupportedOperationException("the command is not supported");
+    }
+
+    @Override
+    public void clearAll() {
+        throw new UnsupportedOperationException("the command is not supported");
+    }
+
+    @Override
+    public List<Genre> getAll() {
         return null;
     }
 
     @Override
-    Genre update(Genre data) throws DataNotFoundException {
-        return null;
-    }
-
-    @Override
-    void clearAll() {
-
-    }
-
-    @Override
-    List<Genre> getAll() {
-        return null;
-    }
-
-    @Override
-    Genre findById(Long id) throws DataNotFoundException {
+    public Genre findById(Long id) throws DataNotFoundException {
         return null;
     }
 }

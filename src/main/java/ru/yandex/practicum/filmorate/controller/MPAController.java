@@ -12,7 +12,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/films")
+@RequestMapping("/mpa")
 @RequiredArgsConstructor
 public class MPAController {
 

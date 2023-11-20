@@ -17,27 +17,27 @@ public class MPAService extends AbstractService<MPA> {
     private final MPAService mpaService;
 
     @Override
-    MPA create(MPA data) {
+    public MPA create(MPA data) {
+        throw new UnsupportedOperationException("the command is not supported");
+    }
+
+    @Override
+    public MPA update(MPA data) throws DataNotFoundException {
+        throw new UnsupportedOperationException("the command is not supported");
+    }
+
+    @Override
+    public void clearAll() {
+        throw new UnsupportedOperationException("the command is not supported");
+    }
+
+    @Override
+    public List<MPA> getAll() {
         return null;
     }
 
     @Override
-    MPA update(MPA data) throws DataNotFoundException {
-        return null;
-    }
-
-    @Override
-    void clearAll() {
-
-    }
-
-    @Override
-    List<MPA> getAll() {
-        return null;
-    }
-
-    @Override
-    MPA findById(Long id) throws DataNotFoundException {
+    public MPA findById(Long id) throws DataNotFoundException {
         return null;
     }
 }
