@@ -1,6 +1,5 @@
 package ru.yandex.practicum.filmorate.service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exception.DataNotFoundException;
 import ru.yandex.practicum.filmorate.model.BaseUnit;
@@ -11,7 +10,7 @@ import java.util.List;
 @Service
 public abstract class AbstractService<T extends BaseUnit> {
 
-     private final AbstractStorage<T> storage;
+     protected final AbstractStorage<T> storage;
 
      public AbstractService(AbstractStorage<T> storage) {
           this.storage = storage;

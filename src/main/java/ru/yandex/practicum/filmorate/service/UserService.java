@@ -1,6 +1,5 @@
 package ru.yandex.practicum.filmorate.service;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exception.DataNotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
@@ -18,18 +17,16 @@ public class UserService extends AbstractService<User> {
         super(storage);
     }
 
-    public void addFriend(Long id1, Long id2) throws DataNotFoundException {
-        User user1 = findById(id1);
-        User user2 = findById(id2);
-        user1.getFriendsId().add(id2);
-        user2.getFriendsId().add(id1);
+    public void addFriend(Long id, Long friendId) throws DataNotFoundException {
+        User user = findById(id);
+        findById(friendId);
+        user.getFriendsId().add(friendId);
     }
 
-    public void removeFriend(Long id1, Long id2) throws DataNotFoundException {
-        User user1 = findById(id1);
-        User user2 = findById(id2);
-        user1.getFriendsId().remove(id2);
-        user2.getFriendsId().remove(id1);
+    public void removeFriend(Long id, Long friendId) throws DataNotFoundException {
+        User user = findById(id);
+        findById(friendId);
+        user.getFriendsId().remove(friendId);
     }
 
     private List<User> getUsersById(Set<Long> usersId) throws DataNotFoundException {
@@ -55,4 +52,19 @@ public class UserService extends AbstractService<User> {
 
     }
 
+    @Override
+    public User create(User user) {
+        if (user.getName() == null || user.getName().equals("")) {
+            user.setName(user.getLogin());
+        }
+        return storage.create(user);
+    }
+
+    @Override
+    public User update(User user) throws DataNotFoundException {
+        if (user.getName() == null || user.getName().equals("")) {
+            user.setName(user.getLogin());
+        }
+        return storage.update(user);
+    }
 }
