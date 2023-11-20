@@ -15,8 +15,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserService extends AbstractService<User> {
 
-    private final InMemoryUserStorage userStorage;
-
     public void addFriend(Long id1, Long id2) throws DataNotFoundException {
         User user1 = findById(id1);
         User user2 = findById(id2);
@@ -52,41 +50,6 @@ public class UserService extends AbstractService<User> {
 
         return getUsersById(commonFriends);
 
-    }
-
-    @Override
-    public User findById(Long id) throws DataNotFoundException {
-        User user = userStorage.findById(id);
-        if (user == null) {
-            throw new DataNotFoundException("Пользователь с id = " + id + " не найден");
-        }
-        return user;
-    }
-
-    @Override
-    public User create(User user) {
-        if (user.getName() == null || user.getName().equals("")) {
-            user.setName(user.getLogin());
-        }
-        return userStorage.create(user);
-    }
-
-    @Override
-    public User update(User user) throws DataNotFoundException {
-        if (user.getName() == null || user.getName().equals("")) {
-            user.setName(user.getLogin());
-        }
-        return userStorage.update(user);
-    }
-
-    @Override
-    public List<User> getAll() {
-        return userStorage.getAll();
-    }
-
-    @Override
-    public void clearAll() {
-        userStorage.clearAll();
     }
 
 }

@@ -32,38 +32,9 @@ public class FilmService extends AbstractService<Film> {
 
     public List<Film> getTopFilms(int count) {
         return filmStorage.getAll().stream()
-                .sorted(Comparator.comparing(film -> ((Film)film).getLikesFromUsers().size()).reversed())
+                .sorted(Comparator.comparing(film -> ((Film) film).getLikesFromUsers().size()).reversed())
                 .limit(count)
                 .collect(Collectors.toList());
-    }
-
-    @Override
-    public Film findById(Long id) throws DataNotFoundException {
-        Film film = filmStorage.findById(id);
-        if (film == null) {
-            throw new DataNotFoundException("Фильм с id = " + id + " не найден");
-        }
-        return film;
-    }
-
-    @Override
-    public Film create(Film data) {
-        return filmStorage.create(data);
-    }
-
-    @Override
-    public Film update(Film data) throws DataNotFoundException {
-        return filmStorage.update(data);
-    }
-
-    @Override
-    public void clearAll() {
-        filmStorage.clearAll();
-    }
-
-    @Override
-    public List<Film> getAll() {
-        return filmStorage.getAll();
     }
 
 }
