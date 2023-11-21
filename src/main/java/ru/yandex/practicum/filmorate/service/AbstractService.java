@@ -12,11 +12,9 @@ import java.util.List;
 public abstract class AbstractService<T extends BaseUnit> {
 
      protected final AbstractStorage<T> storage;
-     protected final UniquePairsSetStorage uniquePairsSetStorage;
 
-     public AbstractService(AbstractStorage<T> storage, UniquePairsSetStorage uniquePairsSetStorage) {
+     public AbstractService(AbstractStorage<T> storage) {
           this.storage = storage;
-          this.uniquePairsSetStorage = uniquePairsSetStorage;
      }
 
      public T create(T data) {

@@ -18,4 +18,8 @@ public class Genre extends BaseUnit {
     @NotBlank
     private String name;
 
+    public Genre(Long id) {
+        super(id);
+        name = "";
+    }
 }

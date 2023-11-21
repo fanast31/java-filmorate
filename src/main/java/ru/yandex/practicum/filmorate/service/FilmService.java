@@ -1,10 +1,11 @@
 package ru.yandex.practicum.filmorate.service;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exception.DataNotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.storage.AbstractStorage;
+import ru.yandex.practicum.filmorate.storage.db.UniquePairsSetDbStorage.FilmsGenresDbStorage;
+import ru.yandex.practicum.filmorate.storage.db.UniquePairsSetDbStorage.LikesDbStorage;
 
 import java.util.Comparator;
 import java.util.List;
@@ -14,10 +15,15 @@ import java.util.stream.Collectors;
 public class FilmService extends AbstractService<Film> {
 
     private final UserService userService;
+    private final LikesDbStorage likesDbStorage;
+    private final FilmsGenresDbStorage filmsGenresDbStorage;
 
-    public FilmService(AbstractStorage<Film> storage, UserService userService) {
+    public FilmService(AbstractStorage<Film> storage, UserService userService,
+                       LikesDbStorage likesDbStorage, FilmsGenresDbStorage filmsGenresDbStorage) {
         super(storage);
         this.userService = userService;
+        this.likesDbStorage = likesDbStorage;
+        this.filmsGenresDbStorage = filmsGenresDbStorage;
     }
 
     public void addLike(Long filmId, Long userId) throws DataNotFoundException {

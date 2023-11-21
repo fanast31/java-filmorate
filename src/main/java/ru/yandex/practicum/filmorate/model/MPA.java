@@ -18,4 +18,8 @@ public class MPA extends BaseUnit {
     @NotBlank
     private String name;
 
+    public MPA(Long id) {
+        super(id);
+        name = "";
+    }
 }

@@ -37,8 +37,6 @@ public class Film extends BaseUnit {
     @Min(1)
     private int duration;
 
-    private Set<Long> likesFromUsers = new HashSet<>();
-
     private Set<Genre> genres = new HashSet<>();
 
     private MPA mpa;
