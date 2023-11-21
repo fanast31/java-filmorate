@@ -5,33 +5,35 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exception.DataNotFoundException;
 import ru.yandex.practicum.filmorate.model.Genre;
+import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.GenreStorage;
+import ru.yandex.practicum.filmorate.storage.UserStorage;
 
 import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class UserDbStorage implements GenreStorage {
+public class UserDbStorage implements UserStorage {
 
     private final JdbcTemplate jdbcTemplate;
 
     @Override
-    public Genre findById(Long id) {
+    public User findById(Long id) {
         return null;
     }
 
     @Override
-    public Genre create(Genre data) {
+    public User create(User data) {
         return null;
     }
 
     @Override
-    public Genre update(Genre data) throws DataNotFoundException {
+    public User update(User data) throws DataNotFoundException {
         return null;
     }
 
     @Override
-    public List<Genre> getAll() {
+    public List<User> getAll() {
         return null;
     }
 

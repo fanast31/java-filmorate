@@ -3,40 +3,34 @@ package ru.yandex.practicum.filmorate.storage.db;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
-import ru.yandex.practicum.filmorate.exception.DataNotFoundException;
-import ru.yandex.practicum.filmorate.model.Genre;
 import ru.yandex.practicum.filmorate.storage.GenreStorage;
+import ru.yandex.practicum.filmorate.storage.UniquePairsSetStorage;
 
-import java.util.List;
+import java.util.Set;
 
 @Component
 @RequiredArgsConstructor
-public class FriendsDbStorage implements GenreStorage {
+public class FriendsDbStorage implements UniquePairsSetStorage {
 
     private final JdbcTemplate jdbcTemplate;
 
     @Override
-    public Genre findById(Long id) {
+    public Set<Long> getAllKeys2(Long key1) {
         return null;
     }
 
     @Override
-    public Genre create(Genre data) {
+    public Set<Long> getAllKey1(Long key2) {
         return null;
     }
 
     @Override
-    public Genre update(Genre data) throws DataNotFoundException {
-        return null;
+    public void mergePair(Long key1, Long key2) {
+
     }
 
     @Override
-    public List<Genre> getAll() {
-        return null;
-    }
-
-    @Override
-    public void clearAll() {
+    public void removePair(Long key1, Long key2) {
 
     }
 }

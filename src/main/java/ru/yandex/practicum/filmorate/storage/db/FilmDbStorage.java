@@ -4,34 +4,34 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exception.DataNotFoundException;
-import ru.yandex.practicum.filmorate.model.Genre;
-import ru.yandex.practicum.filmorate.storage.GenreStorage;
+import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.storage.FilmStorage;
 
 import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class FilmDbStorage implements GenreStorage {
+public class FilmDbStorage implements FilmStorage {
 
     private final JdbcTemplate jdbcTemplate;
 
     @Override
-    public Genre findById(Long id) {
+    public Film findById(Long id) {
         return null;
     }
 
     @Override
-    public Genre create(Genre data) {
+    public Film create(Film data) {
         return null;
     }
 
     @Override
-    public Genre update(Genre data) throws DataNotFoundException {
+    public Film update(Film data) throws DataNotFoundException {
         return null;
     }
 
     @Override
-    public List<Genre> getAll() {
+    public List<Film> getAll() {
         return null;
     }
 

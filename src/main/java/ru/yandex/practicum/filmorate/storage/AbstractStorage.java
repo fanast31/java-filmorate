@@ -7,14 +7,14 @@ import java.util.List;
 
 public interface AbstractStorage<T extends BaseUnit> {
 
-    public T findById(Long id);
+    T findById(Long id);
 
-    public T create(T data);
+    T create(T data);
 
-    public T update(T data) throws DataNotFoundException;
+    T update(T data) throws DataNotFoundException;
 
-    public List<T> getAll();
+    List<T> getAll();
 
-    public void clearAll();
+    void clearAll();
 
 }
