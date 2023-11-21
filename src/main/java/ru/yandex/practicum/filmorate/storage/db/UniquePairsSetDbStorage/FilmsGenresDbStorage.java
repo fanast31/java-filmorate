@@ -1,4 +1,4 @@
-package ru.yandex.practicum.filmorate.storage.db;
+package ru.yandex.practicum.filmorate.storage.db.UniquePairsSetDbStorage;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -37,8 +37,7 @@ public class FilmsGenresDbStorage implements UniquePairsSetStorage {
 
     @Override
     public void mergePair(Long key1, Long key2) {
-        String sql = "INSERT INTO filmsGenres (film_id, genre_id) VALUES (?, ?) "
-                + "ON DUPLICATE KEY UPDATE genre_id = VALUES(genre_id)";
+        String sql = "INSERT INTO filmsGenres (film_id, genre_id) VALUES (?, ?) ON CONFLICT DO NOTHING";
         jdbcTemplate.update(sql, key1, key2);
     }
 

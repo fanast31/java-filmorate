@@ -4,8 +4,8 @@ import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exception.DataNotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.AbstractStorage;
+import ru.yandex.practicum.filmorate.storage.UniquePairsSetStorage;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -13,20 +13,20 @@ import java.util.stream.Collectors;
 @Service
 public class UserService extends AbstractService<User> {
 
-    public UserService(AbstractStorage<User> storage) {
-        super(storage);
+    public UserService(AbstractStorage<User> storage, UniquePairsSetStorage uniquePairsSetStorage) {
+        super(storage, uniquePairsSetStorage);
     }
 
     public void addFriend(Long id, Long friendId) throws DataNotFoundException {
-        User user = findById(id);
+        findById(id);
         findById(friendId);
-        user.getFriendsId().add(friendId);
+        uniquePairsSetStorage.mergePair(id, friendId);
     }
 
     public void removeFriend(Long id, Long friendId) throws DataNotFoundException {
-        User user = findById(id);
+        findById(id);
         findById(friendId);
-        user.getFriendsId().remove(friendId);
+        uniquePairsSetStorage.removePair(id, friendId);
     }
 
     private List<User> getUsersById(Set<Long> usersId) throws DataNotFoundException {
@@ -36,17 +36,17 @@ public class UserService extends AbstractService<User> {
     }
 
     public List<User> getFriends(Long userId) throws DataNotFoundException {
-        User user1 = findById(userId);
-        return getUsersById(user1.getFriendsId());
+        findById(userId);
+        return getUsersById(uniquePairsSetStorage.getAllKeys2(userId));
     }
 
     public List<User> getCommonFriends(Long id1, Long id2) throws DataNotFoundException {
 
-        User user1 = findById(id1);
-        User user2 = findById(id2);
+        findById(id1);
+        findById(id2);
 
-        Set<Long> commonFriends = new HashSet<>(user1.getFriendsId());
-        commonFriends.retainAll(user2.getFriendsId());
+        Set<Long> commonFriends = uniquePairsSetStorage.getAllKeys2(id1);
+        commonFriends.retainAll(uniquePairsSetStorage.getAllKeys2(id2));
 
         return getUsersById(commonFriends);
 
