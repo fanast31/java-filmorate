@@ -1,20 +1,13 @@
 package ru.yandex.practicum.filmorate.storage.db.UniquePairsSetDbStorage;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
-import ru.yandex.practicum.filmorate.exception.DataNotFoundException;
-import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.model.Genre;
-import ru.yandex.practicum.filmorate.storage.FilmStorage;
-import ru.yandex.practicum.filmorate.storage.GenreStorage;
 import ru.yandex.practicum.filmorate.storage.UniquePairsSetStorage;
 
-import java.sql.ResultSet;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Component
@@ -39,6 +32,22 @@ public class FilmsGenresDbStorage implements UniquePairsSetStorage {
     public void mergePair(Long key1, Long key2) {
         String sql = "INSERT INTO filmsGenres (film_id, genre_id) VALUES (?, ?) ON CONFLICT DO NOTHING";
         jdbcTemplate.update(sql, key1, key2);
+    }
+
+    public void mergePair(Long key1, Set<Long> key2Set) {
+        String sql = "INSERT INTO filmsGenres (film_id, genre_id) VALUES (?, ?) ON CONFLICT DO NOTHING";
+        Long[] key2Array = key2Set.toArray(new Long[0]);
+        jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement ps, int i) throws SQLException {
+                ps.setLong(1, key1);
+                ps.setLong(2, key2Array[i]);
+            }
+            @Override
+            public int getBatchSize() {
+                return key2Array.length;
+            }
+        });
     }
 
     @Override

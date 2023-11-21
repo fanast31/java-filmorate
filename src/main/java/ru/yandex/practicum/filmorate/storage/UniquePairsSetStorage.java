@@ -14,6 +14,8 @@ public interface UniquePairsSetStorage {
 
     void mergePair(Long key1, Long key2);
 
+    void mergePair(Long key1, Set<Long> key2);
+
     void removePair(Long key1, Long key2);
 
     static Set<Long> executeRequest(JdbcTemplate jdbcTemplate, String sqlQuery, Long value) {

@@ -4,7 +4,6 @@ import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exception.DataNotFoundException;
 import ru.yandex.practicum.filmorate.model.BaseUnit;
 import ru.yandex.practicum.filmorate.storage.AbstractStorage;
-import ru.yandex.practicum.filmorate.storage.UniquePairsSetStorage;
 
 import java.util.List;
 

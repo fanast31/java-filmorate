@@ -33,6 +33,11 @@ public class LikesDbStorage implements UniquePairsSetStorage {
     }
 
     @Override
+    public void mergePair(Long key1, Set<Long> key2) {
+
+    }
+
+    @Override
     public void removePair(Long key1, Long key2) {
 
     }
