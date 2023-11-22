@@ -1,6 +1,7 @@
 
 package ru.yandex.practicum.filmorate.service;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exception.DataNotFoundException;
 import ru.yandex.practicum.filmorate.model.Genre;
@@ -9,7 +10,7 @@ import ru.yandex.practicum.filmorate.storage.AbstractStorage;
 @Service
 public class GenreService extends AbstractService<Genre> {
 
-    public GenreService(AbstractStorage<Genre> storage) {
+    public GenreService(@Qualifier("genreDbStorage") AbstractStorage<Genre> storage) {
         super(storage);
     }
 
