@@ -7,6 +7,7 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 import ru.yandex.practicum.filmorate.annotations.MustBeAfterValue;
 
+import javax.persistence.Column;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -25,6 +26,7 @@ import java.util.Set;
 public class Film extends BaseUnit {
 
     @NotBlank
+    @Column(nullable = false)
     private String name;
 
     @Size(max = 200)
@@ -32,6 +34,7 @@ public class Film extends BaseUnit {
 
     @JsonFormat
     @NotNull
+    @Column(nullable = false)
     @MustBeAfterValue(value = "1895-12-28")
     private LocalDate releaseDate;
 
