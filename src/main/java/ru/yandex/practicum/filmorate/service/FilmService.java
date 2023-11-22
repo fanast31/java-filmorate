@@ -50,8 +50,12 @@ public class FilmService extends AbstractService<Film> {
 
     public void updateDependentDataInFilm(Film data) {
 
+        Long mpaId = data.getMpaId();
         if (data.getMpa() != null) {
-            data.setMpa(mpaService.findById(data.getMpa().getId()));
+            mpaId = data.getMpa().getId();
+        }
+        if (mpaId != null) {
+            data.setMpa(mpaService.findById(mpaId));
         }
 
         Set<Genre> newDataGenres = filmsGenresDbStorage.getAllKeys2(data.getId()).stream()
