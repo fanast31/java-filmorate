@@ -22,7 +22,7 @@ public class GenreDbStorage implements GenreStorage {
         String sqlQuery = "select * from genres where id = ?";
         List<Genre> genres = jdbcTemplate.query(sqlQuery, GenreDbStorage::createGenre, id);
         if (genres.size() == 0) {
-            throw new DataNotFoundException("genre not found");
+            return null;
         }
         return genres.get(0);
     }

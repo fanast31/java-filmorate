@@ -22,7 +22,7 @@ public class MPADbStorage implements MPAStorage {
         String sqlQuery = "select * from MPA where id = ?";
         List<MPA> mpa = jdbcTemplate.query(sqlQuery, MPADbStorage::createMPA, id);
         if (mpa.size() == 0) {
-            throw new DataNotFoundException("mpa not found");
+            return null;
         }
         return mpa.get(0);
     }

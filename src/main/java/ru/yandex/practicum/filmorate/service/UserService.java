@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.service;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exception.DataNotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
@@ -12,23 +13,33 @@ import java.util.stream.Collectors;
 
 @Service
 public class UserService extends AbstractService<User> {
-    private final FriendsDbStorage uniquePairsSetStorage;
+    private final FriendsDbStorage friendsDbStorage;
 
-    public UserService(AbstractStorage<User> storage, FriendsDbStorage uniquePairsSetStorage) {
+    public UserService(@Qualifier("userDbStorage") AbstractStorage<User> storage, FriendsDbStorage friendsDbStorage) {
         super(storage);
-        this.uniquePairsSetStorage = uniquePairsSetStorage;
+        this.friendsDbStorage = friendsDbStorage;
+    }
+
+    @Override
+    void updateDependentDataInObject(User data) {
+        throw new UnsupportedOperationException("the command is not supported");
+    }
+
+    @Override
+    void updateDependentDataInDB(User data) {
+        throw new UnsupportedOperationException("the command is not supported");
     }
 
     public void addFriend(Long id, Long friendId) throws DataNotFoundException {
         findById(id);
         findById(friendId);
-        uniquePairsSetStorage.mergePair(id, friendId);
+        friendsDbStorage.mergePair(id, friendId);
     }
 
     public void removeFriend(Long id, Long friendId) throws DataNotFoundException {
         findById(id);
         findById(friendId);
-        uniquePairsSetStorage.removePair(id, friendId);
+        friendsDbStorage.removePair(id, friendId);
     }
 
     private List<User> getUsersById(Set<Long> usersId) throws DataNotFoundException {
@@ -39,7 +50,7 @@ public class UserService extends AbstractService<User> {
 
     public List<User> getFriends(Long userId) throws DataNotFoundException {
         findById(userId);
-        return getUsersById(uniquePairsSetStorage.getAllKeys2(userId));
+        return getUsersById(friendsDbStorage.getAllKeys2(userId));
     }
 
     public List<User> getCommonFriends(Long id1, Long id2) throws DataNotFoundException {
@@ -47,8 +58,8 @@ public class UserService extends AbstractService<User> {
         findById(id1);
         findById(id2);
 
-        Set<Long> commonFriends = uniquePairsSetStorage.getAllKeys2(id1);
-        commonFriends.retainAll(uniquePairsSetStorage.getAllKeys2(id2));
+        Set<Long> commonFriends = friendsDbStorage.getAllKeys2(id1);
+        commonFriends.retainAll(friendsDbStorage.getAllKeys2(id2));
 
         return getUsersById(commonFriends);
 
