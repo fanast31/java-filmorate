@@ -34,3 +34,7 @@ build/
 .mvn/
 mvnw.cmd
 mvnw
+
+# H2 database files
+/db/*.db
+/db/*.trace.db

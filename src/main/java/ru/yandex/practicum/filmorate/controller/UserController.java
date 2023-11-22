@@ -32,21 +32,17 @@ public class UserController {
 
     @GetMapping("/{id}/friends")
     public ResponseEntity<List<User>> getFriends(@PathVariable Long id) throws DataNotFoundException {
-        List<User> filmsSet = userService.getFriends(id);
-        return ResponseEntity.status(HttpStatus.OK).body(filmsSet);
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getFriends(id));
     }
 
     @GetMapping("/{id}/friends/common/{otherId}")
     public ResponseEntity<List<User>> getCommonFriends(@PathVariable Long id, @PathVariable Long otherId) throws DataNotFoundException {
-        // Логика получения списка общих друзей
-        List<User> filmsSet = userService.getCommonFriends(id, otherId);
-        return ResponseEntity.status(HttpStatus.OK).body(filmsSet);
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getCommonFriends(id, otherId));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<User> getUser(@PathVariable Long id) throws DataNotFoundException {
-        User user = userService.findById(id);
-        return ResponseEntity.status(HttpStatus.OK).body(user);
+        return ResponseEntity.status(HttpStatus.OK).body(userService.findById(id));
     }
 
     @PostMapping
