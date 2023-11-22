@@ -30,13 +30,13 @@ public class FriendsDbStorage implements UniquePairsSetStorage {
 
     @Override
     public void mergePair(Long key1, Long key2) {
-        String sql = "INSERT INTO friends (user_id, friend_id) VALUES (?, ?) ON CONFLICT DO NOTHING";
+        String sql = "MERGE INTO friends (user_id, friend_id) VALUES (?, ?)";
         jdbcTemplate.update(sql, key1, key2);
     }
 
     @Override
     public void mergePair(Long key1, Set<Long> key2Set) {
-        String sql = "INSERT INTO friends (user_id, friend_id) VALUES (?, ?) ON CONFLICT DO NOTHING";
+        String sql = "MERGE INTO friends (user_id, friend_id) VALUES (?, ?)";
         Long[] key2Array = key2Set.toArray(new Long[0]);
         jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
             @Override

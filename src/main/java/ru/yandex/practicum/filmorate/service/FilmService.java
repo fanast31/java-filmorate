@@ -46,12 +46,25 @@ public class FilmService extends AbstractService<Film> {
             data.setMpa(mpa);
         }
 
+        HashMap<Long, Genre> allAvailableGenres = new HashMap<>();
+        if (data.getId() != null) {
+            Set<Long> keySet = filmsGenresDbStorage.getAllKeys2(data.getId());
+        }
+
         Set<Genre> dataGenres = data.getGenres();
+        if (dataGenres == null) {
+
+        } else {
+
+        }
+
+
+
         Set<Genre> newDataGenres = new HashSet<>();
-        if (dataGenres.size() > 0) {
+        if (dataGenres != null && dataGenres.size() > 0) {
             HashMap<Long, Genre> allAvailableGenres = new HashMap<>();
-            for (int i = 0; i < genreService.getAll().size(); i++) {
-                allAvailableGenres.put((long) i, genreService.getAll().get(i));
+            for(Genre genre : genreService.getAll()) {
+                allAvailableGenres.put(genre.getId(), genre);
             }
             for (Genre genre : dataGenres) {
                 Genre newGenre = allAvailableGenres.get(genre.getId());
@@ -67,8 +80,8 @@ public class FilmService extends AbstractService<Film> {
 
     @Override
     public void updateDependentDataInDB(Film data) {
-        filmsGenresDbStorage.removePairs(data.getId());
         Set<Genre> dataGenres = data.getGenres();
+        filmsGenresDbStorage.removePairs(data.getId());
         if (dataGenres.size() > 0) {
             filmsGenresDbStorage.mergePair(data.getId(),
                     dataGenres.stream().map(Genre::getId).collect(Collectors.toSet()));
