@@ -19,7 +19,7 @@ public class MPAService extends AbstractService<MPA> {
     }
 
     @Override
-    public MPA update(MPA data) throws DataNotFoundException {
+    public MPA update(MPA data) {
         throw new UnsupportedOperationException("the command is not supported");
     }
 

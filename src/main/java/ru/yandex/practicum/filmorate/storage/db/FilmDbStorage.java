@@ -75,7 +75,7 @@ public class FilmDbStorage implements FilmStorage {
     }
 
     @Override
-    public Film update(Film data) throws DataNotFoundException {
+    public Film update(Film data) {
 
         String sql = "UPDATE films SET name = ?, description = ?, releaseDate = ?, duration = ?, mpa_id = ? " +
                 "WHERE id = ?";

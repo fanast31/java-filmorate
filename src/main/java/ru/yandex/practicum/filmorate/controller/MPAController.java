@@ -19,14 +19,12 @@ public class MPAController {
 
     @GetMapping
     public ResponseEntity<List<MPA>> getAll() {
-        List<MPA> list = service.getAll();
-        return ResponseEntity.status(HttpStatus.OK).body(list);
+        return ResponseEntity.status(HttpStatus.OK).body(service.getAll());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<MPA> getGenre(@PathVariable Long id) throws DataNotFoundException {
-        MPA mpa = service.findById(id);
-        return ResponseEntity.status(HttpStatus.OK).body(mpa);
+        return ResponseEntity.status(HttpStatus.OK).body(service.findById(id));
     }
 
 }

@@ -32,26 +32,22 @@ public class FilmController {
 
     @GetMapping("/popular")
     public ResponseEntity<List<Film>> getTopFilms(@RequestParam(required = false, defaultValue = "10") int count) {
-        List<Film> filmsList = filmService.getTopFilms(count);
-        return ResponseEntity.status(HttpStatus.OK).body(filmsList);
+        return ResponseEntity.status(HttpStatus.OK).body(filmService.getTopFilms(count));
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Film> getFilm(@PathVariable Long id) throws DataNotFoundException {
-        Film film = filmService.findById(id);
-        return ResponseEntity.status(HttpStatus.OK).body(film);
+        return ResponseEntity.status(HttpStatus.OK).body(filmService.findById(id));
     }
 
     @PostMapping
     public ResponseEntity<Film> create(@Valid @RequestBody Film film) {
-        Film newFilm = filmService.create(film);
-        return ResponseEntity.status(HttpStatus.CREATED).body(newFilm);
+        return ResponseEntity.status(HttpStatus.CREATED).body(filmService.create(film));
     }
 
     @PutMapping()
     public ResponseEntity<Film> update(@Valid @RequestBody Film film) throws DataNotFoundException {
-        Film newFilm = filmService.update(film);
-        return ResponseEntity.status(HttpStatus.OK).body(newFilm);
+        return ResponseEntity.status(HttpStatus.OK).body(filmService.update(film));
     }
 
     @DeleteMapping()

@@ -20,7 +20,7 @@ public abstract class AbstractService<T extends BaseUnit> {
         return storage.create(data);
     }
 
-    public T update(T data) throws DataNotFoundException {
+    public T update(T data) {
         return storage.update(data);
     }
 
@@ -32,7 +32,7 @@ public abstract class AbstractService<T extends BaseUnit> {
         return storage.getAll();
     }
 
-    public T findById(Long id) throws DataNotFoundException {
+    public T findById(Long id) {
         T unit = storage.findById(id);
         if (unit == null) {
             throw new DataNotFoundException("Unit with id = " + id + " not found");

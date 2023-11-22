@@ -19,14 +19,12 @@ public class GenreController {
 
     @GetMapping
     public ResponseEntity<List<Genre>> getAll() {
-        List<Genre> list = service.getAll();
-        return ResponseEntity.status(HttpStatus.OK).body(list);
+        return ResponseEntity.status(HttpStatus.OK).body(service.getAll());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<Genre> getGenre(@PathVariable Long id) throws DataNotFoundException {
-        Genre genre = service.findById(id);
-        return ResponseEntity.status(HttpStatus.OK).body(genre);
+        return ResponseEntity.status(HttpStatus.OK).body(service.findById(id));
     }
 
 }

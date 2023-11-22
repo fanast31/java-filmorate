@@ -20,30 +20,30 @@ public class UserService extends AbstractService<User> {
         this.friendsDbStorage = friendsDbStorage;
     }
 
-    public void addFriend(Long id, Long friendId) throws DataNotFoundException {
+    public void addFriend(Long id, Long friendId) {
         findById(id);
         findById(friendId);
         friendsDbStorage.mergePair(id, friendId);
     }
 
-    public void removeFriend(Long id, Long friendId) throws DataNotFoundException {
+    public void removeFriend(Long id, Long friendId) {
         findById(id);
         findById(friendId);
         friendsDbStorage.removePair(id, friendId);
     }
 
-    private List<User> getUsersById(Set<Long> usersId) throws DataNotFoundException {
+    private List<User> getUsersById(Set<Long> usersId) {
         return usersId.stream()
                 .map(this::findById)
                 .collect(Collectors.toList());
     }
 
-    public List<User> getFriends(Long userId) throws DataNotFoundException {
+    public List<User> getFriends(Long userId) {
         findById(userId);
         return getUsersById(friendsDbStorage.getAllKeys2(userId));
     }
 
-    public List<User> getCommonFriends(Long id1, Long id2) throws DataNotFoundException {
+    public List<User> getCommonFriends(Long id1, Long id2) {
 
         findById(id1);
         findById(id2);
@@ -64,7 +64,7 @@ public class UserService extends AbstractService<User> {
     }
 
     @Override
-    public User update(User user) throws DataNotFoundException {
+    public User update(User user) {
         if (user.getName() == null || user.getName().equals("")) {
             user.setName(user.getLogin());
         }

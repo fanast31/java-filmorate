@@ -65,7 +65,7 @@ public class UserDbStorage implements UserStorage {
     }
 
     @Override
-    public User update(User data) throws DataNotFoundException {
+    public User update(User data) {
 
         String sql = "UPDATE users SET email = ?, login = ?, name = ?, birthday = ? WHERE id = ?";
 

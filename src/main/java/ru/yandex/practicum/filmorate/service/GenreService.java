@@ -3,7 +3,6 @@ package ru.yandex.practicum.filmorate.service;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import ru.yandex.practicum.filmorate.exception.DataNotFoundException;
 import ru.yandex.practicum.filmorate.model.Genre;
 import ru.yandex.practicum.filmorate.storage.AbstractStorage;
 
@@ -20,7 +19,7 @@ public class GenreService extends AbstractService<Genre> {
     }
 
     @Override
-    public Genre update(Genre data) throws DataNotFoundException {
+    public Genre update(Genre data) {
         throw new UnsupportedOperationException("the command is not supported");
     }
 

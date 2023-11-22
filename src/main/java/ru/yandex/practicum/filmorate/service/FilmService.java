@@ -84,7 +84,7 @@ public class FilmService extends AbstractService<Film> {
     }
 
     @Override
-    public Film update(Film data) throws DataNotFoundException {
+    public Film update(Film data) {
         checkDependentData(data);
         super.update(data);
         createFilmsGenres(data);
@@ -92,13 +92,13 @@ public class FilmService extends AbstractService<Film> {
         return data;
     }
 
-    public void addLike(Long filmId, Long userId) throws DataNotFoundException {
+    public void addLike(Long filmId, Long userId) {
         findById(filmId);
         userService.findById(userId);
         likesDbStorage.mergePair(filmId, userId);
     }
 
-    public void addDislike(Long filmId, Long userId) throws DataNotFoundException {
+    public void addDislike(Long filmId, Long userId) {
         findById(filmId);
         userService.findById(userId);
         likesDbStorage.removePair(filmId, userId);
