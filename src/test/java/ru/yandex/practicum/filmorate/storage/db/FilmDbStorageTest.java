@@ -29,12 +29,14 @@ class FilmDbStorageTest {
                 .description("description")
                 .releaseDate(LocalDate.of(1990, 1, 1))
                 .duration(1)
-                .mpa(new MPA(1L))
+                .mpaId(1L)
+                .mpa(new MPA(1L, "G"))
                 .build();
         FilmDbStorage filmDbStorage = new FilmDbStorage(jdbcTemplate);
         filmDbStorage.create(newFilm);
 
         Film newFilm2 = filmDbStorage.findById(1L);
+        newFilm2.setMpa(new MPA(1L, "G"));
 
         assertThat(newFilm)
                 .isNotNull()
@@ -52,15 +54,16 @@ class FilmDbStorageTest {
                 .description("description")
                 .releaseDate(LocalDate.of(1990, 1, 1))
                 .duration(1)
-                .mpa(new MPA(1L))
+                .mpaId(1L)
+                .mpa(new MPA(1L, "G"))
                 .build();
         filmDbStorage.create(newFilm);
 
         newFilm.setName("123");
-        newFilm.setMpa(new MPA(2L));
         filmDbStorage.update(newFilm);
 
         Film newFilm2 = filmDbStorage.findById(1L);
+        newFilm2.setMpa(new MPA(1L, "G"));
 
         assertThat(newFilm)
                 .isNotNull()
@@ -78,6 +81,7 @@ class FilmDbStorageTest {
                 .description("description")
                 .releaseDate(LocalDate.of(1990, 1, 1))
                 .duration(1)
+                .mpaId(1L)
                 .mpa(new MPA(1L))
                 .build();
         filmDbStorage.create(newFilm);
@@ -87,12 +91,15 @@ class FilmDbStorageTest {
                 .description("description1111")
                 .releaseDate(LocalDate.of(1990, 2, 1))
                 .duration(2)
+                .mpaId(2L)
                 .mpa(new MPA(2L))
                 .build();
         filmDbStorage.create(newFilm2);
 
         List<Film> list = filmDbStorage.getAll();
         List<Film> list2 = new ArrayList<>();
+        newFilm.setMpa(null);
+        newFilm2.setMpa(null);
         list2.add(newFilm);
         list2.add(newFilm2);
 

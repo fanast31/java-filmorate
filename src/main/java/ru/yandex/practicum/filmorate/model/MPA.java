@@ -22,4 +22,9 @@ public class MPA extends BaseUnit {
         super(id);
         name = "";
     }
+
+    public MPA(Long id, String name) {
+        super(id);
+        this.name = name;
+    }
 }
