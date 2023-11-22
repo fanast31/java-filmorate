@@ -36,43 +36,53 @@ public class FilmService extends AbstractService<Film> {
     }
 
     @Override
-    public Film create(Film data) {
+    public void updateDependentDataInDB(Film data) {
+        filmsGenresDbStorage.removePairs(data.getId());
+        Set<Genre> dataGenres = data.getGenres();
+        if (dataGenres.size() > 0) {
+            filmsGenresDbStorage.mergePair(data.getId(),
+                    dataGenres.stream().map(Genre::getId).collect(Collectors.toSet()));
+        }
+    }
+
+    @Override
+    public void updateDependentDataInObject(Film data) {
 
         MPA mpa = data.getMpa();
         if (mpa != null) {
-            mpaService.findById(mpa.getId());
+            data.setMpa(mpaService.findById(mpa.getId()));
         }
 
         Set<Genre> dataGenres = data.getGenres();
-        Set<Long> dataGenresId = new HashSet<>();
+        Set<Genre> newDataGenres = new HashSet<>();
         if (dataGenres.size() > 0) {
             List<Genre> allAvailableGenres = genreService.getAll();
             for (Genre genre : dataGenres) {
-                if (!allAvailableGenres.contains(genre)) {
-                    throw new DataNotFoundException("Genre with id = " + genre.getId() + " not found");
+                if (allAvailableGenres.contains(genre)) {
+                    newDataGenres.add(genre);
                 } else {
-                    dataGenresId.add(genre.getId());
+                    throw new DataNotFoundException("Genre with id = " + genre.getId() + " not found");
                 }
             }
         }
+        data.setGenres(newDataGenres);
 
+    }
+
+    @Override
+    public Film create(Film data) {
+        updateDependentDataInObject(data);
         Film newData = super.create(data);
-
-        if (dataGenres.size() > 0) {
-            filmsGenresDbStorage.mergePair(data.getId(), dataGenresId);
-        }
-
+        updateDependentDataInDB(newData);
         return newData;
     }
 
     @Override
     public Film update(Film data) throws DataNotFoundException {
-        return super.update(data);
-    }
-
-    @Override
-    public String toString() {
-        return super.toString();
+        updateDependentDataInObject(data);
+        Film newData = super.update(data);
+        updateDependentDataInDB(newData);
+        return newData;
     }
 
     public void addLike(Long filmId, Long userId) throws DataNotFoundException {

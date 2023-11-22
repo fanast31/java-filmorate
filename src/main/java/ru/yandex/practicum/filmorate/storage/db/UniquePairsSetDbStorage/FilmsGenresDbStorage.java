@@ -55,4 +55,10 @@ public class FilmsGenresDbStorage implements UniquePairsSetStorage {
         String sql = "DELETE FROM filmsGenres WHERE film_id = ? AND genre_id = ?";
         jdbcTemplate.update(sql, key1, key2);
     }
+
+    @Override
+    public void removePairs(Long key1) {
+        String sql = "DELETE FROM filmsGenres WHERE film_id = ?";
+        jdbcTemplate.update(sql, key1);
+    }
 }

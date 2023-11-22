@@ -18,6 +18,8 @@ public interface UniquePairsSetStorage {
 
     void removePair(Long key1, Long key2);
 
+    void removePairs(Long key1);
+
     static Set<Long> executeRequest(JdbcTemplate jdbcTemplate, String sqlQuery, Long value) {
         List<Long> resultList =
                 jdbcTemplate.query(sqlQuery, new Object[]{value}, (rs, rowNum) -> rs.getLong(1));
