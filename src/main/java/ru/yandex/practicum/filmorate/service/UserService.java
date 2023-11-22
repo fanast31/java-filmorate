@@ -7,8 +7,6 @@ import ru.yandex.practicum.filmorate.storage.AbstractStorage;
 import ru.yandex.practicum.filmorate.storage.db.UniquePairsSetDbStorage.FriendsDbStorage;
 
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class UserService extends AbstractService<User> {
@@ -31,31 +29,15 @@ public class UserService extends AbstractService<User> {
         friendsDbStorage.removePair(id, friendId);
     }
 
-
-
-    private List<User> getUsersById(Set<Long> usersId) {
-        return usersId.stream()
-                .map(this::findById)
-                .collect(Collectors.toList());
-    }
-
     public List<User> getFriends(Long userId) {
-        findById(userId);
-        return getUsersById(friendsDbStorage.getAllKeys2(userId));
+        return friendsDbStorage.getFriends(userId);
     }
 
     public List<User> getCommonFriends(Long id1, Long id2) {
-
         findById(id1);
         findById(id2);
-
-        Set<Long> commonFriends = friendsDbStorage.getAllKeys2(id1);
-        commonFriends.retainAll(friendsDbStorage.getAllKeys2(id2));
-
-        return getUsersById(commonFriends);
-
+        return friendsDbStorage.getCommonFriends(id1, id2);
     }
-
 
 
     @Override
