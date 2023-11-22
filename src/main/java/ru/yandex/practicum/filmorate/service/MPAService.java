@@ -28,4 +28,14 @@ public class MPAService extends AbstractService<MPA> {
         throw new UnsupportedOperationException("the command is not supported");
     }
 
+    @Override
+    void updateDependentDataInObject(MPA data) {
+        throw new UnsupportedOperationException("the command is not supported");
+    }
+
+    @Override
+    void updateDependentDataInDB(MPA data) {
+        throw new UnsupportedOperationException("the command is not supported");
+    }
+
 }

@@ -9,10 +9,7 @@ import ru.yandex.practicum.filmorate.storage.AbstractStorage;
 import ru.yandex.practicum.filmorate.storage.db.UniquePairsSetDbStorage.FilmsGenresDbStorage;
 import ru.yandex.practicum.filmorate.storage.db.UniquePairsSetDbStorage.LikesDbStorage;
 
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,6 +33,38 @@ public class FilmService extends AbstractService<Film> {
     }
 
     @Override
+    public void updateDependentDataInObject(Film data) {
+
+        Long mpaId = data.getMpaId();
+        MPA mpa = data.getMpa();
+        if (mpa != null) {
+            mpaId = mpa.getId();
+        }
+        if (mpaId != null) {
+            mpa = mpaService.findById(mpaId);
+            data.setMpa(mpa);
+        }
+
+        Set<Genre> dataGenres = data.getGenres();
+        Set<Genre> newDataGenres = new HashSet<>();
+        if (dataGenres.size() > 0) {
+            HashMap<Long, Genre> allAvailableGenres = new HashMap<>();
+            for (int i = 0; i < genreService.getAll().size(); i++) {
+                allAvailableGenres.put((long) i, genreService.getAll().get(i));
+            }
+            for (Genre genre : dataGenres) {
+                Genre newGenre = allAvailableGenres.get(genre.getId());
+                if (newGenre != null) {
+                    newDataGenres.add(newGenre);
+                } else {
+                    throw new DataNotFoundException("Genre with id = " + genre.getId() + " not found");
+                }
+            }
+        }
+        data.setGenres(newDataGenres);
+    }
+
+    @Override
     public void updateDependentDataInDB(Film data) {
         filmsGenresDbStorage.removePairs(data.getId());
         Set<Genre> dataGenres = data.getGenres();
@@ -43,30 +72,6 @@ public class FilmService extends AbstractService<Film> {
             filmsGenresDbStorage.mergePair(data.getId(),
                     dataGenres.stream().map(Genre::getId).collect(Collectors.toSet()));
         }
-    }
-
-    @Override
-    public void updateDependentDataInObject(Film data) {
-
-        MPA mpa = data.getMpa();
-        if (mpa != null) {
-            data.setMpa(mpaService.findById(mpa.getId()));
-        }
-
-        Set<Genre> dataGenres = data.getGenres();
-        Set<Genre> newDataGenres = new HashSet<>();
-        if (dataGenres.size() > 0) {
-            List<Genre> allAvailableGenres = genreService.getAll();
-            for (Genre genre : dataGenres) {
-                if (allAvailableGenres.contains(genre)) {
-                    newDataGenres.add(genre);
-                } else {
-                    throw new DataNotFoundException("Genre with id = " + genre.getId() + " not found");
-                }
-            }
-        }
-        data.setGenres(newDataGenres);
-
     }
 
     @Override
@@ -95,7 +100,6 @@ public class FilmService extends AbstractService<Film> {
         findById(filmId);
         userService.findById(userId);
         likesDbStorage.removePair(filmId, userId);
-
     }
 
     public List<Film> getTopFilms(int count) {
@@ -103,5 +107,19 @@ public class FilmService extends AbstractService<Film> {
                 .sorted(Comparator.comparing(film -> likesDbStorage.getAllKeys2(((Film) film).getId()).size()).reversed())
                 .limit(count)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<Film> getAll() {
+        List<Film> list = super.getAll();
+        list.forEach(this::updateDependentDataInObject);
+        return list;
+    }
+
+    @Override
+    public Film findById(Long id) throws DataNotFoundException {
+        Film unit = super.findById(id);
+        updateDependentDataInObject(unit);
+        return unit;
     }
 }

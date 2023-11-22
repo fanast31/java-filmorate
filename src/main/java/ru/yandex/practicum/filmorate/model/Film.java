@@ -2,6 +2,7 @@
 package ru.yandex.practicum.filmorate.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import ru.yandex.practicum.filmorate.annotations.MustBeAfterValue;
@@ -38,6 +39,9 @@ public class Film extends BaseUnit {
     private int duration;
 
     private Set<Genre> genres = new HashSet<>();
+
+    @JsonIgnore
+    private Long mpaId = 0L;
 
     private MPA mpa = null;
 }
