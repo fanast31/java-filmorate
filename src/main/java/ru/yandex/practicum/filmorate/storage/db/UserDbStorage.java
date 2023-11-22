@@ -2,12 +2,16 @@ package ru.yandex.practicum.filmorate.storage.db;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exception.DataNotFoundException;
+import ru.yandex.practicum.filmorate.exception.KeyNotGeneratedException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
+import org.springframework.jdbc.support.KeyHolder;
 
+import java.sql.PreparedStatement;
 import java.util.List;
 
 @Component
@@ -35,19 +39,27 @@ public class UserDbStorage implements UserStorage {
     @Override
     public User create(User data) {
 
-        String sql = "INSERT INTO users (email, login, name, birthday)" +
-                " VALUES (?, ?, ?, ?) RETURNING id";
+        String sql = "INSERT INTO users (email, login, name, birthday) VALUES (?, ?, ?, ?)";
 
-        Long generatedId = jdbcTemplate.queryForObject(
-                sql,
-                Long.class,
-                data.getEmail(),
-                data.getLogin(),
-                data.getName(),
-                data.getBirthday()
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        jdbcTemplate.update(
+                connection -> {
+                    PreparedStatement ps = connection.prepareStatement(sql, new String[] { "id" });
+                    ps.setString(1, data.getEmail());
+                    ps.setString(2, data.getLogin());
+                    ps.setString(3, data.getName());
+                    ps.setObject(4, data.getBirthday());
+                    return ps;
+                },
+                keyHolder
         );
 
-        data.setId(generatedId);
+        Number key = keyHolder.getKey();
+        if (key == null) {
+            throw new KeyNotGeneratedException("Key was not generated");
+        }
+        data.setId(key.longValue());
 
         return data;
     }

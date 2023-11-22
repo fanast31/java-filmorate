@@ -2,12 +2,17 @@ package ru.yandex.practicum.filmorate.storage.db;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exception.DataNotFoundException;
+import ru.yandex.practicum.filmorate.exception.KeyNotGeneratedException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.storage.FilmStorage;
+import org.springframework.jdbc.support.KeyHolder;
+import ru.yandex.practicum.filmorate.exception.InvalidMPAValue;
 
+import java.sql.PreparedStatement;
 import java.util.List;
 
 @Component
@@ -39,25 +44,32 @@ public class FilmDbStorage implements FilmStorage {
     @Override
     public Film create(Film data) {
 
-        String sql = "INSERT INTO films (name, description, releaseDate, duration, mpa_id)" +
-                " VALUES (?, ?, ?, ?, ?) RETURNING id";
+        String sql = "INSERT INTO films (name, description, releaseDate, duration, mpa_id) VALUES (?, ?, ?, ?, ?)";
 
-        Long mpaId = null;
-        if (data.getMpa() != null) {
-            mpaId = data.getMpa().getId();
+        if (data.getMpa() == null) {
+            throw new InvalidMPAValue("Invalid MPA Value");
         }
 
-        Long generatedId = jdbcTemplate.queryForObject(
-                sql,
-                Long.class,
-                data.getName(),
-                data.getDescription(),
-                data.getReleaseDate(),
-                data.getDuration(),
-                mpaId
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        jdbcTemplate.update(
+                connection -> {
+                    PreparedStatement ps = connection.prepareStatement(sql, new String[] { "id" });
+                    ps.setString(1, data.getName());
+                    ps.setString(2, data.getDescription());
+                    ps.setObject(3, data.getReleaseDate()); // Предполагается, что releaseDate - это объект, например, java.sql.Date
+                    ps.setInt(4, data.getDuration());
+                    ps.setLong(5, data.getMpa().getId());
+                    return ps;
+                },
+                keyHolder
         );
 
-        data.setId(generatedId);
+        Number key = keyHolder.getKey();
+        if (key == null) {
+            throw new KeyNotGeneratedException("Key was not generated");
+        }
+        data.setId(key.longValue());
 
         return data;
     }
