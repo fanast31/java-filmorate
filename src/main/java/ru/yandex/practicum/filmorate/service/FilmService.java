@@ -33,53 +33,35 @@ public class FilmService extends AbstractService<Film> {
         this.mpaService = mpaService;
     }
 
-    @Override
-    public void updateDependentDataInObject(Film data) {
+    public void checkDependentData(Film data) {
 
-        Long mpaId = data.getMpaId();
         MPA mpa = data.getMpa();
         if (mpa != null) {
-            mpaId = mpa.getId();
-        }
-        if (mpaId != null) {
-            mpa = mpaService.findById(mpaId);
-            data.setMpa(mpa);
-        }
-
-        HashMap<Long, Genre> allAvailableGenres = new HashMap<>();
-        if (data.getId() != null) {
-            Set<Long> keySet = filmsGenresDbStorage.getAllKeys2(data.getId());
+            mpaService.findById(mpa.getId());
         }
 
         Set<Genre> dataGenres = data.getGenres();
-        if (dataGenres == null) {
-
-        } else {
-
-        }
-
-
-
-        Set<Genre> newDataGenres = new HashSet<>();
         if (dataGenres != null && dataGenres.size() > 0) {
-            HashMap<Long, Genre> allAvailableGenres = new HashMap<>();
-            for(Genre genre : genreService.getAll()) {
-                allAvailableGenres.put(genre.getId(), genre);
-            }
-            for (Genre genre : dataGenres) {
-                Genre newGenre = allAvailableGenres.get(genre.getId());
-                if (newGenre != null) {
-                    newDataGenres.add(newGenre);
-                } else {
-                    throw new DataNotFoundException("Genre with id = " + genre.getId() + " not found");
-                }
+            for(Genre genre : dataGenres) {
+                genreService.findById(genre.getId());
             }
         }
-        data.setGenres(newDataGenres);
     }
 
-    @Override
-    public void updateDependentDataInDB(Film data) {
+    public void updateDependentDataInFilm(Film data) {
+
+        if (data.getMpa() != null) {
+            data.setMpa(mpaService.findById(data.getMpa().getId()));
+        }
+
+        Set<Genre> newDataGenres = filmsGenresDbStorage.getAllKeys2(data.getId()).stream()
+                .map(genreService::findById)
+                .collect(Collectors.toSet());
+        data.setGenres(newDataGenres);
+
+    }
+
+    public void createFilmsGenres(Film data) {
         Set<Genre> dataGenres = data.getGenres();
         filmsGenresDbStorage.removePairs(data.getId());
         if (dataGenres.size() > 0) {
@@ -90,18 +72,20 @@ public class FilmService extends AbstractService<Film> {
 
     @Override
     public Film create(Film data) {
-        updateDependentDataInObject(data);
-        Film newData = super.create(data);
-        updateDependentDataInDB(newData);
-        return newData;
+        checkDependentData(data);
+        super.create(data);
+        createFilmsGenres(data);
+        updateDependentDataInFilm(data);
+        return data;
     }
 
     @Override
     public Film update(Film data) throws DataNotFoundException {
-        updateDependentDataInObject(data);
-        Film newData = super.update(data);
-        updateDependentDataInDB(newData);
-        return newData;
+        checkDependentData(data);
+        super.update(data);
+        createFilmsGenres(data);
+        updateDependentDataInFilm(data);
+        return data;
     }
 
     public void addLike(Long filmId, Long userId) throws DataNotFoundException {
@@ -126,14 +110,14 @@ public class FilmService extends AbstractService<Film> {
     @Override
     public List<Film> getAll() {
         List<Film> list = super.getAll();
-        list.forEach(this::updateDependentDataInObject);
+        list.forEach(this::updateDependentDataInFilm);
         return list;
     }
 
     @Override
     public Film findById(Long id) throws DataNotFoundException {
         Film unit = super.findById(id);
-        updateDependentDataInObject(unit);
+        updateDependentDataInFilm(unit);
         return unit;
     }
 }

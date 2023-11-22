@@ -39,8 +39,4 @@ public abstract class AbstractService<T extends BaseUnit> {
           }
           return unit;
      }
-
-     abstract void updateDependentDataInObject(T data);
-
-     abstract void updateDependentDataInDB(T data);
 }

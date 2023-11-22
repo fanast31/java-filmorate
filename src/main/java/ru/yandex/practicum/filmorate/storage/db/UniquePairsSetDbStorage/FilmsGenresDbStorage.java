@@ -23,12 +23,6 @@ public class FilmsGenresDbStorage implements UniquePairsSetStorage {
     }
 
     @Override
-    public Set<Long> getAllKey1(Long key2) {
-        String sqlQuery = "SELECT film_id FROM filmsGenres WHERE genre_id = ?";
-        return UniquePairsSetStorage.executeRequest(jdbcTemplate, sqlQuery, key2);
-    }
-
-    @Override
     public void mergePair(Long key1, Long key2) {
         String sql = "MERGE INTO filmsGenres (film_id, genre_id) VALUES (?, ?)";
         jdbcTemplate.update(sql, key1, key2);

@@ -20,16 +20,6 @@ public class UserService extends AbstractService<User> {
         this.friendsDbStorage = friendsDbStorage;
     }
 
-    @Override
-    void updateDependentDataInObject(User data) {
-        throw new UnsupportedOperationException("the command is not supported");
-    }
-
-    @Override
-    void updateDependentDataInDB(User data) {
-        throw new UnsupportedOperationException("the command is not supported");
-    }
-
     public void addFriend(Long id, Long friendId) throws DataNotFoundException {
         findById(id);
         findById(friendId);

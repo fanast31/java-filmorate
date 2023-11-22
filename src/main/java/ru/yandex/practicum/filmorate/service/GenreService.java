@@ -29,13 +29,4 @@ public class GenreService extends AbstractService<Genre> {
         throw new UnsupportedOperationException("the command is not supported");
     }
 
-    @Override
-    void updateDependentDataInObject(Genre data) {
-        throw new UnsupportedOperationException("the command is not supported");
-    }
-
-    @Override
-    void updateDependentDataInDB(Genre data) {
-        throw new UnsupportedOperationException("the command is not supported");
-    }
 }

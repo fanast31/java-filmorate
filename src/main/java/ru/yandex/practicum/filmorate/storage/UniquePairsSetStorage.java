@@ -10,8 +10,6 @@ public interface UniquePairsSetStorage {
 
     Set<Long> getAllKeys2(Long key1);
 
-    Set<Long> getAllKey1(Long key2);
-
     void mergePair(Long key1, Long key2);
 
     void mergePair(Long key1, Set<Long> key2);
