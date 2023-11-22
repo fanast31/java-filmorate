@@ -42,7 +42,7 @@ public class FilmService extends AbstractService<Film> {
 
         Set<Genre> dataGenres = data.getGenres();
         if (dataGenres != null && dataGenres.size() > 0) {
-            for(Genre genre : dataGenres) {
+            for (Genre genre : dataGenres) {
                 genreService.findById(genre.getId());
             }
         }

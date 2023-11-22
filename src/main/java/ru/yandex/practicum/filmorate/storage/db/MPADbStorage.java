@@ -47,7 +47,7 @@ public class MPADbStorage implements MPAStorage {
     @Override
     public MPA update(MPA data) {
         throw new UnsupportedOperationException("the command is not supported");
-   }
+    }
 
     @Override
     public void clearAll() {

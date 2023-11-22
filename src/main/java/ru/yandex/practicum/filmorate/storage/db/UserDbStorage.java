@@ -23,7 +23,7 @@ public class UserDbStorage implements UserStorage {
     @Override
     public User findById(Long id) {
         SqlRowSet userRows = jdbcTemplate.queryForRowSet("select * from users where id = ?", id);
-        if(userRows.next()) {
+        if (userRows.next()) {
             return User.builder()
                     .id(userRows.getLong("id"))
                     .email(userRows.getString("email"))
@@ -45,7 +45,7 @@ public class UserDbStorage implements UserStorage {
 
         jdbcTemplate.update(
                 connection -> {
-                    PreparedStatement ps = connection.prepareStatement(sql, new String[] { "id" });
+                    PreparedStatement ps = connection.prepareStatement(sql, new String[]{"id"});
                     ps.setString(1, data.getEmail());
                     ps.setString(2, data.getLogin());
                     ps.setString(3, data.getName());

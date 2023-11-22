@@ -137,7 +137,7 @@ class FilmControllerTest {
     @Test
     void create_Negative_releaseDate() throws Exception {
 
-        film.setReleaseDate(LocalDate.of(1895,12,27));
+        film.setReleaseDate(LocalDate.of(1895, 12, 27));
         json = newJson(film);
         result =
                 mockMvc.perform(MockMvcRequestBuilders.post(PATH)
@@ -148,7 +148,7 @@ class FilmControllerTest {
 
 
         film = newFilm();
-        film.setReleaseDate(LocalDate.of(1895,12,29));
+        film.setReleaseDate(LocalDate.of(1895, 12, 29));
         json = newJson(film);
         result =
                 mockMvc.perform(MockMvcRequestBuilders.post(PATH)
@@ -234,7 +234,8 @@ class FilmControllerTest {
                         .andReturn();
         responseJson = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
 
-        ArrayList<Film> list = objectMapper.readValue(responseJson, new TypeReference<ArrayList<Film>>() {});
+        ArrayList<Film> list = objectMapper.readValue(responseJson, new TypeReference<ArrayList<Film>>() {
+        });
         assertEquals(filmService.getAll(), list);
     }
 
@@ -257,7 +258,8 @@ class FilmControllerTest {
                         .andReturn();
         responseJson = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
 
-        ArrayList<Film> list = objectMapper.readValue(responseJson, new TypeReference<ArrayList<Film>>() {});
+        ArrayList<Film> list = objectMapper.readValue(responseJson, new TypeReference<ArrayList<Film>>() {
+        });
         assertEquals(filmService.getAll(), list);
 
     }

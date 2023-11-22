@@ -37,6 +37,7 @@ public class FilmsGenresDbStorage implements UniquePairsSetStorage {
                 ps.setLong(1, key1);
                 ps.setLong(2, key2Array[i]);
             }
+
             @Override
             public int getBatchSize() {
                 return key2Array.length;

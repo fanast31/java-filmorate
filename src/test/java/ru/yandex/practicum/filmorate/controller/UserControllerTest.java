@@ -143,7 +143,7 @@ class UserControllerTest {
     @Test
     void create_Negative_birthday() throws Exception {
 
-        user.setBirthday(LocalDate.of(2025,12,27));
+        user.setBirthday(LocalDate.of(2025, 12, 27));
         json = newJson(user);
         result =
                 mockMvc.perform(MockMvcRequestBuilders.post(PATH)
@@ -214,7 +214,8 @@ class UserControllerTest {
                         .andReturn();
         responseJson = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
 
-        ArrayList<User> list = objectMapper.readValue(responseJson, new TypeReference<ArrayList<User>>() {});
+        ArrayList<User> list = objectMapper.readValue(responseJson, new TypeReference<ArrayList<User>>() {
+        });
         assertEquals(userService.getAll(), list);
     }
 
@@ -234,7 +235,8 @@ class UserControllerTest {
                         .andReturn();
         responseJson = result.getResponse().getContentAsString(StandardCharsets.UTF_8);
 
-        ArrayList<User> list = objectMapper.readValue(responseJson, new TypeReference<ArrayList<User>>() {});
+        ArrayList<User> list = objectMapper.readValue(responseJson, new TypeReference<ArrayList<User>>() {
+        });
         assertEquals(userService.getAll(), list);
 
     }

@@ -51,6 +51,6 @@ public abstract class InMemoryBaseStorage<T extends BaseUnit> implements Abstrac
     @Override
     public void clearAll() {
         storage.clear();
-   }
+    }
 
 }

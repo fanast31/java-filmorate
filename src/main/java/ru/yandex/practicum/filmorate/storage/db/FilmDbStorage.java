@@ -26,9 +26,9 @@ public class FilmDbStorage implements FilmStorage {
 
         SqlRowSet userRows = jdbcTemplate.queryForRowSet("select * from films where id = ?", id);
 
-        if(userRows.next()) {
+        if (userRows.next()) {
 
-             return Film.builder()
+            return Film.builder()
                     .id(userRows.getLong("id"))
                     .name(userRows.getString("name"))
                     .description(userRows.getString("description"))
@@ -54,7 +54,7 @@ public class FilmDbStorage implements FilmStorage {
 
         jdbcTemplate.update(
                 connection -> {
-                    PreparedStatement ps = connection.prepareStatement(sql, new String[] { "id" });
+                    PreparedStatement ps = connection.prepareStatement(sql, new String[]{"id"});
                     ps.setString(1, data.getName());
                     ps.setString(2, data.getDescription());
                     ps.setObject(3, data.getReleaseDate()); // Предполагается, что releaseDate - это объект, например, java.sql.Date
