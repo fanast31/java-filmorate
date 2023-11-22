@@ -33,7 +33,7 @@ class UserDbStorageTest {
         UserDbStorage userStorage = new UserDbStorage(jdbcTemplate);
         userStorage.create(newUser);
 
-        User savedUser = userStorage.findById(1L);
+        User savedUser = userStorage.findById(newUser.getId());
 
         assertThat(savedUser)
                 .isNotNull()
@@ -60,7 +60,7 @@ class UserDbStorageTest {
         newUser.setBirthday(LocalDate.of(1990, 1, 2));
         userStorage.update(newUser);
 
-        User savedUser = userStorage.findById(1L);
+        User savedUser = userStorage.findById(newUser.getId());
 
         assertThat(savedUser)
                 .isNotNull()
