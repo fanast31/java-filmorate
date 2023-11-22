@@ -33,7 +33,7 @@ public class FilmService extends AbstractService<Film> {
         this.mpaService = mpaService;
     }
 
-    public void checkDependentData(Film data) {
+    private void checkDependentData(Film data) {
 
         MPA mpa = data.getMpa();
         if (mpa != null) {
@@ -48,7 +48,7 @@ public class FilmService extends AbstractService<Film> {
         }
     }
 
-    public void updateDependentDataInFilm(Film data) {
+    private void updateDependentDataInFilm(Film data) {
 
         Long mpaId = data.getMpaId();
         if (data.getMpa() != null) {
@@ -65,7 +65,7 @@ public class FilmService extends AbstractService<Film> {
 
     }
 
-    public void createFilmsGenres(Film data) {
+    private void createFilmsGenres(Film data) {
         Set<Genre> dataGenres = data.getGenres();
         filmsGenresDbStorage.removePairs(data.getId());
         if (dataGenres.size() > 0) {
