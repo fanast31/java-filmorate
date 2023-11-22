@@ -3,11 +3,15 @@ package ru.yandex.practicum.filmorate.storage.db.UniquePairsSetDbStorage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.BatchPreparedStatementSetter;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
+import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.storage.UniquePairsSetStorage;
 
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Set;
 
 @Component
@@ -56,5 +60,28 @@ public class LikesDbStorage implements UniquePairsSetStorage {
     public void removePairs(Long key1) {
         String sql = "DELETE FROM likesFromUsers WHERE film_id = ?";
         jdbcTemplate.update(sql, key1);
+    }
+
+    public List<Film> getTopFilms(int count) {
+        String sql = "SELECT f.id, f.name, f.description, f.releaseDate, f.duration, f.mpa_id, COUNT(l.user_id) as likes_count " +
+                "FROM films f " +
+                "LEFT JOIN likesFromUsers l ON f.id = l.film_id " +
+                "GROUP BY f.id, f.name, f.description, f.releaseDate, f.duration, f.mpa_id " +
+                "ORDER BY likes_count DESC " +
+                "LIMIT ?";
+
+        return jdbcTemplate.query(sql, new Object[]{count}, new RowMapper<Film>() {
+            @Override
+            public Film mapRow(ResultSet rs, int rowNum) throws SQLException {
+                return Film.builder()
+                        .id(rs.getLong("id"))
+                        .name(rs.getString("name"))
+                        .description(rs.getString("description"))
+                        .releaseDate(rs.getDate("releaseDate").toLocalDate())
+                        .duration(rs.getInt("duration"))
+                        .mpaId(rs.getLong("mpa_id"))
+                        .build();
+            }
+        });
     }
 }

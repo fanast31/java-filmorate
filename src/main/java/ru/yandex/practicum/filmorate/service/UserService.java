@@ -2,7 +2,6 @@ package ru.yandex.practicum.filmorate.service;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import ru.yandex.practicum.filmorate.exception.DataNotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.AbstractStorage;
 import ru.yandex.practicum.filmorate.storage.db.UniquePairsSetDbStorage.FriendsDbStorage;
@@ -32,6 +31,8 @@ public class UserService extends AbstractService<User> {
         friendsDbStorage.removePair(id, friendId);
     }
 
+
+
     private List<User> getUsersById(Set<Long> usersId) {
         return usersId.stream()
                 .map(this::findById)
@@ -54,6 +55,8 @@ public class UserService extends AbstractService<User> {
         return getUsersById(commonFriends);
 
     }
+
+
 
     @Override
     public User create(User user) {

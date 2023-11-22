@@ -27,6 +27,7 @@ public class Film extends BaseUnit {
 
     @NotBlank
     @Column(nullable = false)
+    @Size(max = 100)
     private String name;
 
     @Size(max = 200)

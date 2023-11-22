@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Data
 @SuperBuilder
@@ -16,6 +17,7 @@ import javax.validation.constraints.NotBlank;
 public class Genre extends BaseUnit {
 
     @NotBlank
+    @Size(max = 100)
     private String name;
 
     public Genre(Long id) {

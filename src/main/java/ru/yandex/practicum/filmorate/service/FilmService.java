@@ -105,10 +105,9 @@ public class FilmService extends AbstractService<Film> {
     }
 
     public List<Film> getTopFilms(int count) {
-        return getAll().stream()
-                .sorted(Comparator.comparing(film -> likesDbStorage.getAllKeys2(((Film) film).getId()).size()).reversed())
-                .limit(count)
-                .collect(Collectors.toList());
+        List<Film> list = likesDbStorage.getTopFilms(count);
+        list.forEach(this::updateDependentDataInFilm);
+        return list;
     }
 
     @Override
