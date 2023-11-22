@@ -34,9 +34,9 @@ class FilmDbStorageTest {
                 .build();
         FilmDbStorage filmDbStorage = new FilmDbStorage(jdbcTemplate);
         filmDbStorage.create(newFilm);
+        newFilm.setMpa(null);
 
-        Film newFilm2 = filmDbStorage.findById(1L);
-        newFilm2.setMpa(new MPA(1L, "G"));
+        Film newFilm2 = filmDbStorage.findById(newFilm.getId());
 
         assertThat(newFilm)
                 .isNotNull()
@@ -63,7 +63,7 @@ class FilmDbStorageTest {
         filmDbStorage.update(newFilm);
         newFilm.setMpa(null);
 
-        Film newFilm2 = filmDbStorage.findById(1L);
+        Film newFilm2 = filmDbStorage.findById(newFilm.getId());
 
         assertThat(newFilm)
                 .isNotNull()
