@@ -61,9 +61,9 @@ class FilmDbStorageTest {
 
         newFilm.setName("123");
         filmDbStorage.update(newFilm);
+        newFilm.setMpa(null);
 
         Film newFilm2 = filmDbStorage.findById(1L);
-        newFilm2.setMpa(new MPA(1L, "G"));
 
         assertThat(newFilm)
                 .isNotNull()
