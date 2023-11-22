@@ -75,11 +75,20 @@ public class UserDbStorage implements UserStorage {
 
     @Override
     public List<User> getAll() {
-        return null;
+        String sql = "SELECT id, email, login, name, birthday FROM users";
+        return jdbcTemplate.query(sql, (rs, rowNum) -> {
+            return User.builder()
+                    .id(rs.getLong("id"))
+                    .email(rs.getString("email"))
+                    .login(rs.getString("login"))
+                    .name(rs.getString("name"))
+                    .birthday(rs.getDate("birthday").toLocalDate())
+                    .build();
+        });
     }
 
     @Override
     public void clearAll() {
-
+        throw new UnsupportedOperationException("the command is not supported");
     }
 }

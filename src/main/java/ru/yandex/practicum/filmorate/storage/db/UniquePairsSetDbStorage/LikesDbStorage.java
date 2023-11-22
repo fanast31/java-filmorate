@@ -8,7 +8,6 @@ import ru.yandex.practicum.filmorate.storage.UniquePairsSetStorage;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.Set;
 
 @Component

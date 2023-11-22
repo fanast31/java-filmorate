@@ -1,7 +1,6 @@
 package ru.yandex.practicum.filmorate.storage.memory;
 
 import org.springframework.stereotype.Component;
-import ru.yandex.practicum.filmorate.model.Genre;
 import ru.yandex.practicum.filmorate.model.MPA;
 import ru.yandex.practicum.filmorate.storage.MPAStorage;
 
